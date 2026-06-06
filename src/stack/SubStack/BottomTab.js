@@ -9,27 +9,27 @@ import {
 import { useLinkBuilder, useTheme } from '@react-navigation/native';
 import { Text, PlatformPressable } from '@react-navigation/elements';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../screen/BottomTab/Home';
-import Likes from '../screen/BottomTab/Likes';
-import Chat from '../screen/BottomTab/Chat';
-import Profile from '../screen/BottomTab/Profile';
-import { COLOR } from '../utils/colors';
-import CardSelected from '../assets/icons/card-selected.svg';
-import LikesSelected from '../assets/icons/likes-selected.svg';
-import ChatSelected from '../assets/icons/chat-selected.svg';
-import ProfileSelected from '../assets/icons/profile-selected.svg';
-import Card from '../assets/icons/card.svg';
-import Like from '../assets/icons/likes.svg';
-import Chats from '../assets/icons/chat.svg';
-import Profiles from '../assets/icons/profile.svg';
+import Home from '../../screen/BottomTab/Home';
+import Likes from '../../screen/BottomTab/Likes';
+import Chat from '../../screen/BottomTab/Chat';
+import Profile from '../../screen/BottomTab/Profile';
+import { COLOR } from '../../utils/colors';
+import CardSelected from '../../assets/icons/card-selected.svg';
+import LikesSelected from '../../assets/icons/likes-selected.svg';
+import ChatSelected from '../../assets/icons/chat-selected.svg';
+import ProfileSelected from '../../assets/icons/profile-selected.svg';
+import Card from '../../assets/icons/card.svg';
+import Like from '../../assets/icons/likes.svg';
+import Chats from '../../assets/icons/chat.svg';
+import Profiles from '../../assets/icons/profile.svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import HomeStack from '../screen/BottomTab/SubStack/HomeStack';
-import LikeStack from '../screen/BottomTab/SubStack/LikeStack';
+import HomeStack from '../../screen/BottomTab/SubStack/HomeStack';
+import LikeStack from '../../screen/BottomTab/SubStack/LikeStack';
 
 
 function MyTabBar({ state, descriptors, navigation }) {
@@ -86,7 +86,7 @@ function MyTabBar({ state, descriptors, navigation }) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
+            navigation.push(route.name, route.params);
           }
         };
 
@@ -140,7 +140,7 @@ function BottomTab() {
     { name: 'Profile', component: Profile },
   ];
   return (
-    <View style={{ flex: 1,paddingBottom:hp('2%'),backgroundColor:'#fff' }}>
+    <View style={{ flex: 1,backgroundColor:COLOR.other}}>
       <Tab.Navigator
         screenOptions={{ headerShown: false}}
         tabBar={props => <MyTabBar {...props} />}

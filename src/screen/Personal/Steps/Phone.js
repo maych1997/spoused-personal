@@ -25,7 +25,6 @@ const Phone = ({ navigation, setSteps }) => {
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
         paddingTop: hp('3%'),
       }}
     >
@@ -102,7 +101,7 @@ const Phone = ({ navigation, setSteps }) => {
           <TouchableOpacity
             onPress={() => {
               setSteps(5);
-              navigation.navigate('Verification');
+              navigation.push('Verification');
             }}
             style={{
               width: '100%',

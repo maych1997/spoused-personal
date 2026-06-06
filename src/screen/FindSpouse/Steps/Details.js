@@ -12,7 +12,7 @@ import EclipseEmptyRight from '../../../assets/icons/eclipse-details-empty-right
 import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-right.svg';
 import { Chip } from 'react-native-paper';
 
-const Details = ({ navigation, setSteps }) => {
+const Details = ({ navigation, setSpouseSteps }) => {
   const animation = useRef();
   const [selectedChips, setSelectedChips] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -118,9 +118,9 @@ const Details = ({ navigation, setSteps }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+                backgroundColor: COLOR.other,
+                paddingHorizontal: hp('1.5%'),
+                paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -260,10 +260,10 @@ const Details = ({ navigation, setSteps }) => {
       {/* Continue Button + Dots */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
@@ -295,8 +295,8 @@ const Details = ({ navigation, setSteps }) => {
         </View>
 
         <TouchableOpacity
-          onPress={() => {setSteps(14);
-            navigation.navigate('Personality'); // adjust route as needed
+          onPress={() => {setSpouseSteps(14);
+            navigation.push('Personality'); // adjust route as needed
             }}
           style={{
             width: '100%',

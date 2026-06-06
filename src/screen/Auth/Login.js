@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import Footer from '../../components/Footer';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [focusedField, setFocusedField] = useState(null);
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
   return (
-    <View style={{ flex: 1, justifyContent: 'space-between',backgroundColor:COLOR.other,paddingBottom:hp('4%')}}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'space-between',
+        backgroundColor: COLOR.other,
+      }}
+    >
       <Animatable.View
         animation="fadeInDown"
         duration={1000}
@@ -29,7 +38,11 @@ const Login = ({navigation}) => {
 
         <View style={{ paddingTop: hp('2.5%'), gap: hp('2.5%') }}>
           {/* Email Field */}
-          <Animatable.View animation="fadeInUp" delay={200} style={{ gap: hp('1%') }}>
+          <Animatable.View
+            animation="fadeInUp"
+            delay={200}
+            style={{ gap: hp('1%') }}
+          >
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Email</Text>
             <TextInput
               placeholder="Email"
@@ -48,7 +61,11 @@ const Login = ({navigation}) => {
           </Animatable.View>
 
           {/* Password Field */}
-          <Animatable.View animation="fadeInUp" delay={400} style={{ gap: hp('1%') }}>
+          <Animatable.View
+            animation="fadeInUp"
+            delay={400}
+            style={{ gap: hp('1%') }}
+          >
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Password</Text>
             <TextInput
               placeholder="Password"
@@ -76,7 +93,11 @@ const Login = ({navigation}) => {
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>
               Forget your Password ?
             </Text>
-            <TouchableOpacity onPress={()=>{navigation.navigate('ForgotPassword')}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('ForgotPassword');
+              }}
+            >
               <Text
                 style={{
                   fontSize: 14,
@@ -90,10 +111,14 @@ const Login = ({navigation}) => {
           </Animatable.View>
 
           {/* Continue Button */}
-          <Animatable.View style={{marginTop:hp('5%')}} animation="bounceIn" delay={800}>
+          <Animatable.View
+            style={{ marginTop: hp('5%') }}
+            animation="bounceIn"
+            delay={800}
+          >
             <TouchableOpacity
-              onPress={()=>{
-                navigation.navigate('PersonalStack');
+              onPress={() => {
+                navigation.push('PersonalStack');
               }}
               style={{
                 width: '100%',
@@ -104,7 +129,13 @@ const Login = ({navigation}) => {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ fontSize: 14, fontWeight: 'bold', color: COLOR.secondary }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: 'bold',
+                  color: COLOR.secondary,
+                }}
+              >
                 Continue
               </Text>
             </TouchableOpacity>
@@ -113,7 +144,7 @@ const Login = ({navigation}) => {
       </Animatable.View>
 
       {/* Footer Terms */}
-     <Footer></Footer>
+      <Footer></Footer>
     </View>
   );
 };

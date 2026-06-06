@@ -19,7 +19,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 
-const Bio = ({ navigation, setSteps }) => {
+const Bio = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const genders = [
@@ -35,9 +35,9 @@ const Bio = ({ navigation, setSteps }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+                backgroundColor: COLOR.other,
+                paddingHorizontal: hp('1.5%'),
+                paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -69,18 +69,18 @@ const Bio = ({ navigation, setSteps }) => {
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom:0,
+          alignSelf:'center'
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSteps(16);
-            navigation.navigate('Congrats');
+            setSpouseSteps(16);
+            navigation.push('Congrats');
           }}
           style={{
             width: '100%',

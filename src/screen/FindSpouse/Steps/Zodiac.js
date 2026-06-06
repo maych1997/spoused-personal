@@ -7,7 +7,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 
-const Zodiac = ({ navigation, setSteps }) => {
+const Zodiac = ({ navigation, setSpouseSteps }) => {
   const [selected, setSelected] = useState([]);
 
   const zodiacs = [
@@ -36,10 +36,10 @@ const Zodiac = ({ navigation, setSteps }) => {
   return (
     <View
       style={{
-        flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+       flex: 1,
+               backgroundColor: COLOR.other,
+               paddingHorizontal: hp('1.5%'),
+               paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -58,12 +58,12 @@ const Zodiac = ({ navigation, setSteps }) => {
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%'), height: hp('55%') }}
+          style={{ gap: hp('1%')}}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
             data={zodiacs}
-            contentContainerStyle={{ gap: hp('1%'), paddingBottom: hp('3.5%') }}
+            contentContainerStyle={{ gap: hp('1%'), paddingBottom: hp('12%') }}
             renderItem={({ item }) => {
               const isSelected = selected.includes(item.id);
               return (
@@ -106,18 +106,18 @@ const Zodiac = ({ navigation, setSteps }) => {
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSteps(13);
-            navigation.navigate('Details'); // adjust route as needed
+            setSpouseSteps(13);
+            navigation.push('Details'); // adjust route as needed
           }}
           style={{
             width: '100%',

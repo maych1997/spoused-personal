@@ -20,7 +20,6 @@ const Name = ({ navigation, setSteps }) => {
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
         paddingTop: hp('3%'),
       }}
     >
@@ -79,7 +78,7 @@ const Name = ({ navigation, setSteps }) => {
           <TouchableOpacity
             onPress={() => {
               setSteps(1);
-              navigation.navigate('Photos');
+              navigation.push('Photos');
             }}
             style={{
               width: '100%',

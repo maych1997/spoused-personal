@@ -14,7 +14,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 
-const Children = ({ navigation, setSteps }) => {
+const Children = ({ navigation, setSpouseSteps }) => {
   const [selected, setSelected] = useState(0);
 
   // Updated options -> Yes / No / Maybe
@@ -27,10 +27,10 @@ const Children = ({ navigation, setSteps }) => {
   return (
     <View
       style={{
-        flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+       flex: 1,
+               backgroundColor: COLOR.other,
+               paddingHorizontal: hp('1.5%'),
+                paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -96,18 +96,18 @@ const Children = ({ navigation, setSteps }) => {
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSteps(9);
-            navigation.navigate('LookingFor'); // update next step screen
+            setSpouseSteps(9);
+            navigation.push('LookingFor'); // update next step screen
           }}
           style={{
             width: '100%',

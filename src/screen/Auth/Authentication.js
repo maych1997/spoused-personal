@@ -94,7 +94,7 @@ const Authentication = ({navigation}) => {
           >
             Didn’t receive an authentication code?
           </Animatable.Text>
-          <TouchableOpacity onPress={()=>{navigation.navigate('SetPassword')}}>
+          <TouchableOpacity onPress={()=>{navigation.push('SetPassword')}}>
             <Animatable.Text
               animation="fadeInLeft"
               duration={800}

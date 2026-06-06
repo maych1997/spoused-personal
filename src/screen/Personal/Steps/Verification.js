@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import OtpInput from '../../../components/OtpInput';
+import Footer from '../../../components/Footer';
 const Verification = ({ navigation }) => {
   return (
     <View
@@ -61,7 +62,7 @@ const Verification = ({ navigation }) => {
           >
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('SpouseInfo');
+                navigation.push('Spouse');
               }}
               style={{
                 width: '100%',
@@ -97,7 +98,7 @@ const Verification = ({ navigation }) => {
           </Animatable.Text>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('SetPassword');
+              navigation.push('SetPassword');
             }}
           >
             <Animatable.Text
@@ -117,44 +118,7 @@ const Verification = ({ navigation }) => {
       </Animatable.View>
 
       {/* Footer Terms */}
-      <View style={{ alignItems: 'center' }}>
-        <Animatable.Text
-          style={{ fontSize: 12, color: '#00000066' }}
-          animation="fadeInUp"
-          delay={1000}
-        >
-          By Continuing you agree to our
-        </Animatable.Text>
-        <Animatable.View
-          animation="fadeInUp"
-          delay={1200}
-          style={{ flexDirection: 'row', gap: wp('2%') }}
-        >
-          <TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: '600',
-                textDecorationLine: 'underline',
-              }}
-            >
-              TERMS OF SERVICE
-            </Text>
-          </TouchableOpacity>
-          <Text>&</Text>
-          <TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: '600',
-                textDecorationLine: 'underline',
-              }}
-            >
-              PRIVACY POLICY
-            </Text>
-          </TouchableOpacity>
-        </Animatable.View>
-      </View>
+      <Footer></Footer>
     </View>
   );
 };

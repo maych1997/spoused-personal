@@ -20,17 +20,17 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { RulerPicker } from 'react-native-ruler-picker';
 
-const Height = ({ navigation, setSteps }) => {
+const Height = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected,setSelected]=useState('cm');
 
   return (
     <View
       style={{
-        flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+       flex: 1,
+               backgroundColor: COLOR.other,
+               paddingHorizontal: hp('1.5%'),
+               paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -95,18 +95,18 @@ const Height = ({ navigation, setSteps }) => {
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSteps(5);
-            navigation.navigate('MaritalStatus');
+            setSpouseSteps(5);
+            navigation.push('MaritalStatus');
           }}
           style={{
             width: '100%',

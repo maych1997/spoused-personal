@@ -23,7 +23,6 @@ const Birthday = ({ navigation, setSteps }) => {
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
         paddingTop: hp('3%'),
       }}
     >
@@ -78,7 +77,7 @@ const Birthday = ({ navigation, setSteps }) => {
           <TouchableOpacity
             onPress={() => {
               setSteps(3);
-              navigation.navigate('Gender');
+              navigation.push('Gender');
             }}
             style={{
               width: '100%',

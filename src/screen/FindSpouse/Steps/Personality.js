@@ -12,7 +12,7 @@ import EclipseEmptyRight from '../../../assets/icons/eclipse-details-empty-right
 import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-right.svg';
 import { Chip } from 'react-native-paper';
 
-const Personality = ({ navigation, setSteps }) => {
+const Personality = ({ navigation, setSpouseSteps }) => {
   const animation = useRef();
   const [selectedChips, setSelectedChips] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -72,9 +72,9 @@ const Personality = ({ navigation, setSteps }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+                backgroundColor: COLOR.other,
+                paddingHorizontal: hp('1.5%'),
+                paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -133,17 +133,17 @@ const Personality = ({ navigation, setSteps }) => {
       {/* Continue Button + Dots */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
-          onPress={() => {setSteps(15);
-            navigation.navigate('Bio'); // adjust route as needed
+          onPress={() => {setSpouseSteps(15);
+            navigation.push('Bio'); // adjust route as needed
             }}
           style={{
             width: '100%',

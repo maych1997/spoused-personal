@@ -88,7 +88,7 @@ const Likes = ({ navigation }) => {
                   >
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate('ProfileDetails');
+                        navigation.push('ProfileDetails');
                       }}
                       activeOpacity={0.8}
                       style={{ alignItems: 'center' }}

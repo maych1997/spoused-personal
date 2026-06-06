@@ -31,7 +31,7 @@ const Personal = ({ setSteps }) => {
         {props => <Phone {...props} setSteps={setSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Verification">
-        {props => <Verification {...props} setSteps={setSteps} />}
+        {props => <Verification {...props} setSteps={setSteps}/>}
       </Stack.Screen>
     </Stack.Navigator>
   );

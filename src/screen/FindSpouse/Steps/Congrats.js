@@ -20,7 +20,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 
-const Congrats = ({ navigation, setSteps }) => {
+const Congrats = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const genders = [
@@ -37,21 +37,33 @@ const Congrats = ({ navigation, setSteps }) => {
       style={{
         flex: 1,
         backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
         alignItems:'center',
-        justifyContent:'center',
+        gap:hp('3.5%')
       }}
     >
       {/* Title */}
-      <Animatable.Text
-        animation="fadeInLeft"
-        duration={800}
-        style={{ fontSize: 24, fontWeight: 'bold' }}
+      <View
+        style={{
+          gap: hp('0.5%'),
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
-        Congratulations
-      </Animatable.Text>
-      <Animatable.Text style={{ fontSize: 14, color: COLOR.grey, marginTop:hp('1%') }}>
-        Your profile has been successfully created!
-      </Animatable.Text>
+        <Animatable.Text
+          animation="fadeInLeft"
+          duration={800}
+          style={{ fontSize: 24, fontWeight: 'bold' }}
+        >
+          Congratulations
+        </Animatable.Text>
+        <Animatable.Text
+          style={{ fontSize: 14, color: COLOR.grey, marginTop: hp('1%') }}
+        >
+          Your profile has been successfully created!
+        </Animatable.Text>
+      </View>
       <View style={{ paddingTop: hp('2.5%'), gap: hp('2.5%') }}>
         {/* Email Field */}
         <Animatable.View
@@ -59,41 +71,39 @@ const Congrats = ({ navigation, setSteps }) => {
           delay={200}
           style={{ gap: hp('1%'), height: hp('55%') }}
         >
-        <Image source={require('../../../assets/images/match.png')}>
-
-        </Image>
-        <View style={{alignItems:'center', marginTop:hp('3%')}}>
-        <Animatable.Text
-        animation="fadeInLeft"
-        duration={800}
-        style={{ fontSize: 24, fontWeight: 'bold' }}
-      >
-       You’re all set!
-      </Animatable.Text>
-      <Animatable.Text
-        animation="fadeInLeft"
-        duration={800}
-        style={{ fontSize: 24, fontWeight: 'bold' }}
-      >
-        Your journey starts here
-      </Animatable.Text>
-      </View>
+          <Image source={require('../../../assets/images/match.png')}></Image>
+          <View style={{ alignItems: 'center', marginTop: hp('3%') }}>
+            <Animatable.Text
+              animation="fadeInLeft"
+              duration={800}
+              style={{ fontSize: 24, fontWeight: 'bold' }}
+            >
+              You’re all set!
+            </Animatable.Text>
+            <Animatable.Text
+              animation="fadeInLeft"
+              duration={800}
+              style={{ fontSize: 24, fontWeight: 'bold' }}
+            >
+              Your journey starts here
+            </Animatable.Text>
+          </View>
         </Animatable.View>
       </View>
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('BottomTab');
+            navigation.push('DashboardStack');
           }}
           style={{
             width: '100%',

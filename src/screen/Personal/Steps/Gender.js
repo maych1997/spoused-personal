@@ -28,7 +28,6 @@ const Gender = ({ navigation, setSteps }) => {
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
         paddingTop: hp('3%'),
       }}
     >
@@ -109,7 +108,7 @@ const Gender = ({ navigation, setSteps }) => {
           <TouchableOpacity
             onPress={() => {
               setSteps(4);
-              navigation.navigate('Phone');
+              navigation.push('Phone');
             }}
             style={{
               width: '100%',

@@ -9,7 +9,7 @@ import { COLOR } from '../utils/colors';
 
 const AuthHeader = ({navigation}) => {
   return (
-    <SafeAreaView
+    <View
       style={{
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -26,7 +26,7 @@ const AuthHeader = ({navigation}) => {
       <TouchableOpacity>
         <Question></Question>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 };
 

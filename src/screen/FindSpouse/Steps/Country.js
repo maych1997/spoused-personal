@@ -19,7 +19,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 
-const Country = ({ navigation, setSteps }) => {
+const Country = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
 const countries = [
@@ -229,9 +229,9 @@ const countries = [
     <View
       style={{
         flex: 1,
-        backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
-        paddingTop: hp('3%'),
+                backgroundColor: COLOR.other,
+                paddingHorizontal: hp('1.5%'),
+                paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -251,12 +251,12 @@ const countries = [
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%'), height: hp('55%') }}
+          style={{ gap: hp('1%')}}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
             data={countries}
-            contentContainerStyle={{ gap: hp('1%'), paddingBottom: hp('3.5%') }}
+            contentContainerStyle={{ gap: hp('1%'), paddingBottom: hp('18%') }}
             renderItem={country => {
               return (
                 <TouchableOpacity
@@ -300,18 +300,18 @@ const countries = [
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
+          bottom: 0,
           position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSteps(4);
-            navigation.navigate('Height');
+            setSpouseSteps(4);
+            navigation.push('Height');
           }}
           style={{
             width: '100%',

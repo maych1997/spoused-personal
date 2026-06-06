@@ -19,7 +19,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 
-const Profession = ({ navigation, setSteps }) => {
+const Profession = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const professions = [
@@ -77,7 +77,7 @@ const Profession = ({ navigation, setSteps }) => {
       style={{
         flex: 1,
         backgroundColor: COLOR.other,
-        paddingBottom: hp('3%'),
+        paddingHorizontal: hp('1.5%'),
         paddingTop: hp('3%'),
       }}
     >
@@ -98,12 +98,12 @@ const Profession = ({ navigation, setSteps }) => {
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%'), height: hp('55%') }}
+          style={{ gap: hp('1%')}}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
             data={professions}
-            contentContainerStyle={{ gap: hp('1%') }}
+            contentContainerStyle={{ gap: hp('1%'),paddingBottom: hp('18%') }}
             renderItem={profession => {
               console.log(profession);
               return (
@@ -148,18 +148,18 @@ const Profession = ({ navigation, setSteps }) => {
       {/* Continue Button */}
       <Animatable.View
         style={{
-          marginTop: hp('1%'),
-          position: 'absolute',
           width: '100%',
-          bottom: hp('2%'),
+          position: 'absolute',
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSteps(1);
-            navigation.navigate('Describe');
+            setSpouseSteps(1);
+            navigation.push('Describe');
           }}
           style={{
             width: '100%',
@@ -168,6 +168,7 @@ const Profession = ({ navigation, setSteps }) => {
             borderRadius: hp('10%'),
             justifyContent: 'center',
             alignItems: 'center',
+            alignSelf: 'center',
           }}
         >
           <Text

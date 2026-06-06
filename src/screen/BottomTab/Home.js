@@ -41,7 +41,7 @@ const Home = ({ navigation }) => {
   }, [isFocused]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: COLOR.other }}>
       <View style={styles.container}>
         <Swiper
           key={key} // 👈 reset swiper & animations on focus
@@ -186,7 +186,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute',
     zIndex: 1000,
-    bottom: hp('2%'),
   },
   text: {
     textAlign: 'center',

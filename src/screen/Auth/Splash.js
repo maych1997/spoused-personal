@@ -216,7 +216,7 @@ const Splash = ({navigation}) => {
             animation={progress == 1 ? 'fadeInUp' : ''}
             delay={progress == 1 ? 500 : 0}
           >
-            <TouchableOpacity onPress={()=>{navigation.navigate('Login')}}>
+            <TouchableOpacity onPress={()=>{navigation.push('AuthStack')}}>
               <Text
                 style={{
                   fontSize: 14,

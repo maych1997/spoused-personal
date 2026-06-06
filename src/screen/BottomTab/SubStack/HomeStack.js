@@ -25,7 +25,7 @@ const HomeStack = () => {
         header: ({ navigation, route }) => {
           console.log('::::::::', navigation.canGoBack());
           return (
-            <SafeAreaView
+            <View
               style={{
                 backgroundColor: COLOR.other,
                 display: 'flex',
@@ -38,7 +38,7 @@ const HomeStack = () => {
               <View>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.pop();
+                    navigation.goBack();
                   }}
                 >
                   {navigation.canGoBack() && route.name == 'ProfileDetails' ? (
@@ -76,7 +76,7 @@ const HomeStack = () => {
                   <Filter></Filter>
                 </TouchableOpacity>
               </View>
-            </SafeAreaView>
+            </View>
           );
         },
       }}

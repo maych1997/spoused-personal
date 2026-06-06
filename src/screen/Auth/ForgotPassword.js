@@ -51,7 +51,7 @@ const ForgotPassword = ({navigation}) => {
           {/* Continue Button */}
           <Animatable.View style={{ marginTop: hp('5%') }} animation="bounceIn" delay={800}>
             <TouchableOpacity
-              onPress={()=>{navigation.navigate('Authentication')}}
+              onPress={()=>{navigation.push('Authentication')}}
               style={{
                 width: '100%',
                 backgroundColor: COLOR.primary,

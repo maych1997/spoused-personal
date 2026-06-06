@@ -17,66 +17,70 @@ import Details from '../../screen/FindSpouse/Steps/Details';
 import Personality from '../../screen/FindSpouse/Steps/Personality';
 import Bio from '../../screen/FindSpouse/Steps/Bio';
 import Congrats from '../../screen/FindSpouse/Steps/Congrats';
+import DashboardStack from '../DashboardStack';
 
 
 const Stack = createNativeStackNavigator();
 
-const Spouse = ({ setSteps }) => {
+const Spouse = ({ setSpouseSteps }) => {
   return (
     <Stack.Navigator
       initialRouteName="Profession"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Profession">
-        {props => <Profession {...props} setSteps={setSteps} />}
+        {props => <Profession {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Describe">
-        {props => <Describe {...props} setSteps={setSteps} />}
+        {props => <Describe {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Degree">
-        {props => <Degree {...props} setSteps={setSteps} />}
+        {props => <Degree {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Country">
-        {props => <Country {...props} setSteps={setSteps} />}
+        {props => <Country {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Height">
-        {props => <Height {...props} setSteps={setSteps} />}
+        {props => <Height {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="MaritalStatus">
-        {props => <MaritalStatus {...props} setSteps={setSteps} />}
+        {props => <MaritalStatus {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Gender">
-        {props => <Gender {...props} setSteps={setSteps} />}
+        {props => <Gender {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Smoke">
-        {props => <Smoke {...props} setSteps={setSteps} />}
+        {props => <Smoke {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Children">
-        {props => <Children {...props} setSteps={setSteps} />}
+        {props => <Children {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="LookingFor">
-        {props => <LookingFor {...props} setSteps={setSteps} />}
+        {props => <LookingFor {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Religion">
-        {props => <Religion {...props} setSteps={setSteps} />}
+        {props => <Religion {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Drink">
-        {props => <Drink {...props} setSteps={setSteps} />}
+        {props => <Drink {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Zodiac">
-        {props => <Zodiac {...props} setSteps={setSteps} />}
+        {props => <Zodiac {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Details">
-        {props => <Details {...props} setSteps={setSteps} />}
+        {props => <Details {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Personality">
-        {props => <Personality {...props} setSteps={setSteps} />}
+        {props => <Personality {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Bio">
-        {props => <Bio {...props} setSteps={setSteps} />}
+        {props => <Bio {...props} setSpouseSteps={setSpouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Congrats">
-        {props => <Congrats {...props} setSteps={setSteps} />}
+        {props => <Congrats {...props} setSpouseSteps={setSpouseSteps} />}
+      </Stack.Screen>
+      <Stack.Screen name="DashboardStack">
+        {props => <DashboardStack {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

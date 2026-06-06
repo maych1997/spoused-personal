@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp,heightPercentageToDP as hp } from 'react-native-responsive-screen';
 const Footer = () => {
   return (
-    <View style={{ alignItems: 'center' }}>
+    <View style={{ alignItems: 'center', gap: hp('0.5%') }}>
       <Animatable.Text
         style={{ fontSize: 12, color: '#00000066' }}
         animation="fadeInUp"

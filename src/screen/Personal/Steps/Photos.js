@@ -25,7 +25,6 @@ const Photos = ({ navigation, setSteps }) => {
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: COLOR.other,
-        paddingBottom:hp('3%'),
         paddingTop:hp('3%'),
       }}
     >
@@ -149,7 +148,7 @@ const Photos = ({ navigation, setSteps }) => {
         >
           <TouchableOpacity
               onPress={()=>{setSteps(2);
-              navigation.navigate('Birthday');}}
+              navigation.push('Birthday');}}
             style={{
               width: '100%',
               backgroundColor: COLOR.primary,

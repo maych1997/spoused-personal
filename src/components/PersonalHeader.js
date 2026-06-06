@@ -12,7 +12,7 @@ import { COLOR } from '../utils/colors';
 import * as Animatable from 'react-native-animatable';
 const PersonalHeader = ({ steps, setSteps, navigation, title }) => {
   return (
-    <SafeAreaView
+    <View
       style={{
         alignItems: 'center',
         backgroundColor: COLOR.other,
@@ -25,8 +25,20 @@ const PersonalHeader = ({ steps, setSteps, navigation, title }) => {
       <View style={{ display: 'flex', gap: wp('4%'), flexDirection: 'row' }}>
         <TouchableOpacity
           onPress={() => {
-            setSteps(steps - 1);
-            navigation.goBack();
+            setSteps(steps-1);
+            if(steps==5){
+              navigation.push('PersonalStack', { screen: 'Personal', params: { screen: 'Phone' } });  
+            }else if(steps==4){
+              navigation.push('PersonalStack', { screen: 'Personal', params: { screen: 'Gender' } });
+            }else if(steps==3){
+              navigation.push('PersonalStack', { screen: 'Personal', params: { screen: 'Birthday' } });
+            }else if(steps==2){
+              navigation.push('PersonalStack', { screen: 'Personal', params: { screen : 'Photos' } });
+            }else if(steps==1){
+              navigation.push('PersonalStack', { screen: 'Personal', params: { screen : 'Name' } });
+            }else if(steps==0){
+              navigation.goBack();
+            }
           }}
         >
           <Back></Back>
@@ -42,7 +54,7 @@ const PersonalHeader = ({ steps, setSteps, navigation, title }) => {
       <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
         <Question></Question>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 };
 
