@@ -8,9 +8,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import Footer from '../../components/Footer';
+import Show from '../../assets/icons/eye-solid.svg';
+import Hide from '../../assets/icons/eye-slash-solid.svg';
 
 const Login = ({ navigation }) => {
   const [focusedField, setFocusedField] = useState(null);
+  const [isHidden, setIsHidden] = useState(true);
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
@@ -67,21 +70,36 @@ const Login = ({ navigation }) => {
             style={{ gap: hp('1%') }}
           >
             <Text style={{ fontSize: 14, fontWeight: 'bold' }}>Password</Text>
-            <TextInput
-              placeholder="Password"
-              secureTextEntry
-              onFocus={() => setFocusedField('password')}
-              onBlur={() => setFocusedField(null)}
-              style={{
-                padding: hp('0.5%'),
-                height: hp('5%'),
-                borderWidth: 1,
-                borderColor: getBorderColor('password'),
-                borderRadius: hp('1%'),
-                backgroundColor: '#FAFAFA',
-                fontSize: 14,
-              }}
-            />
+            <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
+              <TextInput
+                placeholder="Password"
+                secureTextEntry={isHidden}
+                onFocus={() => setFocusedField('password')}
+                onBlur={() => setFocusedField(null)}
+                style={{
+                  padding: hp('0.5%'),
+                  height: hp('5%'),
+                  borderWidth: 1,
+                  borderColor: getBorderColor('password'),
+                  borderRadius: hp('1%'),
+                  backgroundColor: '#FAFAFA',
+                  fontSize: 14,
+                  width: '100%',
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setIsHidden(!isHidden);
+                }}
+                style={{ position: 'absolute', right: wp('2%') }}
+              >
+                {isHidden ? (
+                  <Hide width={wp('4%')} height={hp('2%')} />
+                ) : (
+                  <Show width={wp('4%')} height={hp('2%')} />
+                )}
+              </TouchableOpacity>
+            </View>
           </Animatable.View>
 
           {/* Forgot Password */}
