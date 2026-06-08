@@ -8,13 +8,13 @@ const Footer = () => {
       <Animatable.Text
         style={{ fontSize: 12, color: '#00000066' }}
         animation="fadeInUp"
-        delay={1000}
+        delay={200}
       >
         By Continuing you agree to our
       </Animatable.Text>
       <Animatable.View
         animation="fadeInUp"
-        delay={1200}
+        delay={200}
         style={{ flexDirection: 'row', gap: wp('2%') }}
       >
         <TouchableOpacity>

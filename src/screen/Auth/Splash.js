@@ -13,8 +13,9 @@ import * as Animatable from 'react-native-animatable';
 import Apple from '../../assets/vector/apple.svg';
 import Google from '../../assets/vector/google.svg';
 import Facebook from '../../assets/vector/facebook.svg';
+import Footer from '../../components/Footer';
 
-const Splash = ({navigation}) => {
+const Splash = ({ navigation }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -216,7 +217,11 @@ const Splash = ({navigation}) => {
             animation={progress == 1 ? 'fadeInUp' : ''}
             delay={progress == 1 ? 500 : 0}
           >
-            <TouchableOpacity onPress={()=>{navigation.push('AuthStack')}}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('AuthStack');
+              }}
+            >
               <Text
                 style={{
                   fontSize: 14,
@@ -242,49 +247,7 @@ const Splash = ({navigation}) => {
       >
         <ProgressBar color="#fff" animatedValue={progress}></ProgressBar>
       </View>
-      <View
-        style={{
-          alignItems: 'center',
-          display: progress == 1 ? 'flex' : 'none',
-        }}
-      >
-        <Animatable.Text
-          style={{ fontSize: 12, color: '#00000066', opacity: 0 }}
-          animation={progress == 1 ? 'fadeInUp' : ''}
-          delay={progress == 1 ? 600 : 0}
-        >
-          By Countinuing you agree to our
-        </Animatable.Text>
-        <Animatable.View
-          animation={progress == 1 ? 'fadeInUp' : ''}
-          delay={progress == 1 ? 600 : 0}
-          style={{ display: 'flex', flexDirection: 'row', gap: wp('2%') }}
-        >
-          <TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: '600',
-                textDecorationLine: 'underline',
-              }}
-            >
-              TERMS OF SERVICE
-            </Text>
-          </TouchableOpacity>
-          <Text>&</Text>
-          <TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 14,
-                fontWeight: '600',
-                textDecorationLine: 'underline',
-              }}
-            >
-              PRIVACY POLICY
-            </Text>
-          </TouchableOpacity>
-        </Animatable.View>
-      </View>
+      {progress == 1 && <Footer></Footer>}
     </SafeAreaView>
   );
 };
