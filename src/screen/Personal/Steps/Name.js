@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 
+// 🔥 IMPORT YOUR SERVICE
+import { updateUserProfile } from '../../../services/saveUserService';
+
 const Name = ({ navigation, setSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+
+  const handleNext = async () => {
+    try {
+      if (!name.trim()) return;
+
+      setLoading(true);
+
+      // 🔥 SAVE TO FIREBASE
+      await updateUserProfile({
+        name: name.trim(),
+      });
+
+      setSteps(1);
+      navigation.push('Photos');
+    } catch (error) {
+      console.log('Error saving name:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View
@@ -33,7 +54,7 @@ const Name = ({ navigation, setSteps }) => {
           justifyContent: 'space-between',
         }}
       >
-        {/* Title */}
+        {/* TITLE */}
         <View>
           <Animatable.Text
             animation="fadeInLeft"
@@ -42,18 +63,18 @@ const Name = ({ navigation, setSteps }) => {
           >
             What Is Your Name?
           </Animatable.Text>
+
           <Animatable.Text style={{ fontSize: 14, color: COLOR.grey }}>
             Please enter your full name as it appears on your national ID.
           </Animatable.Text>
-          <View style={{ paddingTop: hp('2.5%'), gap: hp('2.5%') }}>
-            {/* Email Field */}
-            <Animatable.View
-              animation="fadeInUp"
-              delay={200}
-              style={{ gap: hp('1%') }}
-            >
+
+          {/* INPUT */}
+          <View style={{ paddingTop: hp('2.5%') }}>
+            <Animatable.View animation="fadeInUp" delay={200}>
               <TextInput
                 placeholder="Name"
+                value={name}
+                onChangeText={setName}
                 onFocus={() => setFocusedField('name')}
                 onBlur={() => setFocusedField(null)}
                 style={{
@@ -69,20 +90,15 @@ const Name = ({ navigation, setSteps }) => {
             </Animatable.View>
           </View>
         </View>
-        {/* Continue Button */}
-        <Animatable.View
-          style={{ marginTop: hp('1%') }}
-          animation="bounceIn"
-          delay={800}
-        >
+
+        {/* BUTTON */}
+        <Animatable.View animation="bounceIn" delay={800}>
           <TouchableOpacity
-            onPress={() => {
-              setSteps(1);
-              navigation.push('Photos');
-            }}
+            onPress={handleNext}
+            disabled={loading}
             style={{
               width: '100%',
-              backgroundColor: COLOR.primary,
+              backgroundColor: loading ? '#999' : COLOR.primary,
               height: hp('5.2%'),
               borderRadius: hp('10%'),
               justifyContent: 'center',
@@ -96,7 +112,7 @@ const Name = ({ navigation, setSteps }) => {
                 color: COLOR.secondary,
               }}
             >
-              Next
+              {loading ? 'Saving...' : 'Next'}
             </Text>
           </TouchableOpacity>
         </Animatable.View>

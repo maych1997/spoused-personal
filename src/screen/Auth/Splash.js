@@ -14,6 +14,7 @@ import Apple from '../../assets/vector/apple.svg';
 import Google from '../../assets/vector/google.svg';
 import Facebook from '../../assets/vector/facebook.svg';
 import Footer from '../../components/Footer';
+import auth from '@react-native-firebase/auth';
 
 const Splash = ({ navigation }) => {
   const [progress, setProgress] = useState(0);
@@ -218,7 +219,7 @@ const Splash = ({ navigation }) => {
             delay={progress == 1 ? 500 : 0}
           >
             <TouchableOpacity
-              onPress={() => {
+              onPress={async () => {
                 navigation.push('AuthStack');
               }}
             >

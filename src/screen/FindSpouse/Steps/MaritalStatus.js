@@ -18,6 +18,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const MaritalStatus = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -32,7 +33,18 @@ const MaritalStatus = ({ navigation, setSpouseSteps }) => {
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select your marital status');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ maitalStatus:selected });
+
+    setSpouseSteps(6);
+    navigation.push('Gender');
+  };
   return (
     <View
       style={{
@@ -118,8 +130,7 @@ const MaritalStatus = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(6);
-            navigation.push('Gender');
+            handleNext();
           }}
           style={{
             width: '100%',

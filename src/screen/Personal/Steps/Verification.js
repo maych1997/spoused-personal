@@ -9,7 +9,9 @@ import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import OtpInput from '../../../components/OtpInput';
 import Footer from '../../../components/Footer';
-const Verification = ({ navigation }) => {
+const Verification = ({ navigation, route }) => {
+  console.log(route.params)
+  const [otp,setOtp]=useState(0);
   return (
     <View
       style={{
@@ -44,14 +46,16 @@ const Verification = ({ navigation }) => {
             duration={800}
             style={{ fontSize: 12, fontWeight: 'bold', color: COLOR.primary }}
           >
-            +1 213 3329423
+            {route?.params?.phone}
           </Animatable.Text>
         </View>
         <View style={{ paddingTop: hp('2.5%'), gap: hp('2.5%') }}>
           {/* Email Field */}
           <OtpInput
             length={6}
-            onChangeOtp={code => console.log('OTP:', code)}
+            onChangeOtp={code => {
+              setOtp(code);
+            }}
           />
 
           {/* Continue Button */}
@@ -62,7 +66,9 @@ const Verification = ({ navigation }) => {
           >
             <TouchableOpacity
               onPress={() => {
-                navigation.push('Spouse');
+                if(otp==route?.params?.confirmation){
+                  navigation.push('Spouse');
+                }
               }}
               style={{
                 width: '100%',

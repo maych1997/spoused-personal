@@ -18,6 +18,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Profession = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -71,7 +72,18 @@ const Profession = ({ navigation, setSpouseSteps }) => {
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select your profession');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ profession: selected });
+
+    setSpouseSteps(1);
+    navigation.push('Describe');
+  };
   return (
     <View
       style={{
@@ -98,12 +110,12 @@ const Profession = ({ navigation, setSpouseSteps }) => {
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%')}}
+          style={{ gap: hp('1%') }}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
             data={professions}
-            contentContainerStyle={{ gap: hp('1%'),paddingBottom: hp('18%') }}
+            contentContainerStyle={{ gap: hp('1%'), paddingBottom: hp('18%') }}
             renderItem={profession => {
               console.log(profession);
               return (
@@ -158,8 +170,7 @@ const Profession = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(1);
-            navigation.push('Describe');
+            handleNext();
           }}
           style={{
             width: '100%',

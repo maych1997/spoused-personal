@@ -19,11 +19,24 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { RulerPicker } from 'react-native-ruler-picker';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Height = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected,setSelected]=useState('cm');
+  const [height,setHeight]=useState(0);
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select your height');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ height: height+''+selected });
+
+    setSpouseSteps(5);
+    navigation.push('MaritalStatus');
+  };
   return (
     <View
       style={{
@@ -87,7 +100,7 @@ const Height = ({ navigation, setSpouseSteps }) => {
             fractionDigits={0}
             initialValue={0}
             onValueChange={number => console.log(number)}
-            onValueChangeEnd={number => console.log(number)}
+            onValueChangeEnd={number => setHeight(number)}
             unit={selected}
           />
         </Animatable.View>
@@ -105,8 +118,7 @@ const Height = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(5);
-            navigation.push('MaritalStatus');
+            handleNext();
           }}
           style={{
             width: '100%',

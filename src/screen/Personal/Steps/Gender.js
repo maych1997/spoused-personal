@@ -1,26 +1,35 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, TouchableOpacity, View, Alert } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
+
 import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Gender = ({ navigation, setSteps }) => {
-  const [focusedField, setFocusedField] = useState(null);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(null);
+
   const genders = [
     { name: 'Male', id: 1 },
     { name: 'Female', id: 2 },
     { name: 'Other', id: 3 },
   ];
-  const getBorderColor = fieldName =>
-    focusedField === fieldName ? COLOR.primary : '#0000000D';
+
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select your gender');
+      return;
+    }
+
+    // optional: save to backend here
+    updateUserProfile({ gender: selected });
+
+    setSteps(4);
+    navigation.push('Phone');
+  };
 
   return (
     <View
@@ -50,66 +59,50 @@ const Gender = ({ navigation, setSteps }) => {
           >
             What Is Your Gender?
           </Animatable.Text>
+
           <Animatable.Text style={{ fontSize: 14, color: COLOR.grey }}>
             Please select your gender
           </Animatable.Text>
+
           <View style={{ paddingTop: hp('2.5%'), gap: hp('2.5%') }}>
-            {/* Email Field */}
-            <Animatable.View
-              animation="fadeInUp"
-              delay={200}
-              style={{ gap: hp('1%') }}
-            >
-              {genders.map(gender => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelected(gender.id);
-                    }}
-                    style={{
-                      backgroundColor: COLOR.greyShade,
-                      padding: hp('2%'),
-                      borderRadius: hp('0.8%'),
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Text style={{ fontSize: 14, color: COLOR.secondary }}>
-                      {gender.name}
-                    </Text>
-                    {gender.id == selected ? (
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        <View style={{ position: 'absolute', zIndex: 1 }}>
-                          <Tick></Tick>
-                        </View>
-                        <Select></Select>
+            <Animatable.View animation="fadeInUp" delay={200} style={{ gap: hp('1%') }}>
+              {genders.map((gender) => (
+                <TouchableOpacity
+                  key={gender.id}
+                  onPress={() => setSelected(gender.id)}
+                  style={{
+                    backgroundColor: COLOR.greyShade,
+                    padding: hp('2%'),
+                    borderRadius: hp('0.8%'),
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ fontSize: 14, color: COLOR.secondary }}>
+                    {gender.name}
+                  </Text>
+
+                  {gender.id === selected ? (
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                      <View style={{ position: 'absolute', zIndex: 1 }}>
+                        <Tick />
                       </View>
-                    ) : (
-                      <Unselect></Unselect>
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
+                      <Select />
+                    </View>
+                  ) : (
+                    <Unselect />
+                  )}
+                </TouchableOpacity>
+              ))}
             </Animatable.View>
           </View>
         </View>
+
         {/* Continue Button */}
-        <Animatable.View
-          style={{ marginTop: hp('1%') }}
-          animation="bounceIn"
-          delay={800}
-        >
+        <Animatable.View animation="bounceIn" delay={800}>
           <TouchableOpacity
-            onPress={() => {
-              setSteps(4);
-              navigation.push('Phone');
-            }}
+            onPress={handleNext}
             style={{
               width: '100%',
               backgroundColor: COLOR.primary,
@@ -117,7 +110,9 @@ const Gender = ({ navigation, setSteps }) => {
               borderRadius: hp('10%'),
               justifyContent: 'center',
               alignItems: 'center',
+              opacity: selected ? 1 : 0.6,
             }}
+            disabled={!selected}
           >
             <Text
               style={{

@@ -18,6 +18,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Degree = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -51,7 +52,18 @@ const Degree = ({ navigation, setSpouseSteps }) => {
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select your degree');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ degree: selected });
+
+    setSpouseSteps(3);
+    navigation.push('Country');
+  };
   return (
     <View
       style={{
@@ -137,8 +149,7 @@ const Degree = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(3);
-            navigation.push('Country');
+            handleNext();
           }}
           style={{
             width: '100%',
