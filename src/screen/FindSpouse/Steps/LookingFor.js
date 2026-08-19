@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const LookingFor = ({ navigation, setSpouseSteps }) => {
   const [selected, setSelected] = useState([]);
@@ -37,13 +31,26 @@ const LookingFor = ({ navigation, setSpouseSteps }) => {
     }
   };
 
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select the suitable option');
+      return;
+    }
+
+    // optional: save to backend here
+    updateUserProfile({ purpose: selected });
+
+    setSpouseSteps(10);
+    navigation.push('Religion'); // adjust route as needed
+  };
+
   return (
     <View
       style={{
         flex: 1,
-                backgroundColor: COLOR.other,
-                paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -120,8 +127,7 @@ const LookingFor = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(10);
-            navigation.push('Religion'); // adjust route as needed
+            handleNext();
           }}
           style={{
             width: '100%',

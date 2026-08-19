@@ -18,6 +18,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Gender = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -31,13 +32,26 @@ const Gender = ({ navigation, setSpouseSteps }) => {
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select your Gender Preference');
+      return;
+    }
+
+    // optional: save to backend here
+    updateUserProfile({ genderPreference: selected });
+
+    setSpouseSteps(7);
+    navigation.push('Smoke');
+  };
+
   return (
     <View
       style={{
         flex: 1,
-                backgroundColor: COLOR.other,
-                paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -46,7 +60,7 @@ const Gender = ({ navigation, setSpouseSteps }) => {
         duration={800}
         style={{ fontSize: 24, fontWeight: 'bold' }}
       >
-        Which Gender Are You Interested In Dating? 
+        Which Gender Are You Interested In Dating?
       </Animatable.Text>
       <Animatable.Text style={{ fontSize: 14, color: COLOR.grey }}>
         Please select a gender.
@@ -57,7 +71,7 @@ const Gender = ({ navigation, setSpouseSteps }) => {
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%')}}
+          style={{ gap: hp('1%') }}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -116,8 +130,7 @@ const Gender = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(7);
-            navigation.push('Smoke');
+            handleNext();
           }}
           style={{
             width: '100%',

@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Children = ({ navigation, setSpouseSteps }) => {
   const [selected, setSelected] = useState(0);
@@ -23,14 +17,25 @@ const Children = ({ navigation, setSpouseSteps }) => {
     { name: 'No', id: 2 },
     { name: 'Maybe', id: 3 },
   ];
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select the suitable option');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ children: selected });
+
+    setSpouseSteps(9);
+    navigation.push('LookingFor'); // update next step screen
+  };
   return (
     <View
       style={{
-       flex: 1,
-               backgroundColor: COLOR.other,
-               paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        flex: 1,
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -106,8 +111,7 @@ const Children = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(9);
-            navigation.push('LookingFor'); // update next step screen
+            handleNext();
           }}
           style={{
             width: '100%',

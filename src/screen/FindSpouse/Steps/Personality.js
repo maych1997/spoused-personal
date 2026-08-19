@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -11,6 +11,7 @@ import EclipseFilledLeft from '../../../assets/icons/eclipse-details-filled-left
 import EclipseEmptyRight from '../../../assets/icons/eclipse-details-empty-right.svg';
 import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-right.svg';
 import { Chip } from 'react-native-paper';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Personality = ({ navigation, setSpouseSteps }) => {
   const animation = useRef();
@@ -18,29 +19,29 @@ const Personality = ({ navigation, setSpouseSteps }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const traits = [
-  "Analytical",
-  "Thoughtful",
-  "Playful",
-  "Introverted",
-  "Outgoing",
-  "Nurturing",
-  "Spontaneous",
-  "Romantic",
-  "Funny",
-  "Optimistic",
-  "Intellectual",
-  "Creative",
-  "Empathetic",
-  "Ambitious",
-  "Adventurous",
-  "Active Listener",
-  "Animal Lover",
-  "Brunch Lover",
-  "Carefree",
-  "Cultural",
-  "Extrovert",
-  "Family Loving"
-];
+    'Analytical',
+    'Thoughtful',
+    'Playful',
+    'Introverted',
+    'Outgoing',
+    'Nurturing',
+    'Spontaneous',
+    'Romantic',
+    'Funny',
+    'Optimistic',
+    'Intellectual',
+    'Creative',
+    'Empathetic',
+    'Ambitious',
+    'Adventurous',
+    'Active Listener',
+    'Animal Lover',
+    'Brunch Lover',
+    'Carefree',
+    'Cultural',
+    'Extrovert',
+    'Family Loving',
+  ];
 
   const goNext = () => {
     if (currentIndex < questions.length - 1) {
@@ -67,14 +68,28 @@ const Personality = ({ navigation, setSpouseSteps }) => {
       }
     }
   };
+  const handleNext = () => {
+    if (selectedChips.length == 0) {
+      Alert.alert('Please select the options');
+      return;
+    } else if (selectedChips.length < 5) {
+      Alert.alert('Please select atleast 5 options');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ personality: selectedChips });
+
+    setSpouseSteps(15);
+    navigation.push('Bio'); // adjust route as needed
+  };
   return (
     <View
       style={{
         flex: 1,
-                backgroundColor: COLOR.other,
-                paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -83,7 +98,7 @@ const Personality = ({ navigation, setSpouseSteps }) => {
         duration={800}
         style={{ fontSize: 24, fontWeight: 'bold', width: wp('80%') }}
       >
-       Describe Your Personality
+        Describe Your Personality
       </Animatable.Text>
       <Animatable.Text style={{ fontSize: 14, color: COLOR.grey }}>
         Select 5 options that best describe you
@@ -142,9 +157,9 @@ const Personality = ({ navigation, setSpouseSteps }) => {
         delay={800}
       >
         <TouchableOpacity
-          onPress={() => {setSpouseSteps(15);
-            navigation.push('Bio'); // adjust route as needed
-            }}
+          onPress={() => {
+            handleNext();
+          }}
           style={{
             width: '100%',
             backgroundColor: COLOR.primary,

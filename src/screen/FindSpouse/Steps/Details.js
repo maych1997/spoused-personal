@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -11,10 +11,11 @@ import EclipseFilledLeft from '../../../assets/icons/eclipse-details-filled-left
 import EclipseEmptyRight from '../../../assets/icons/eclipse-details-empty-right.svg';
 import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-right.svg';
 import { Chip } from 'react-native-paper';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Details = ({ navigation, setSpouseSteps }) => {
   const animation = useRef();
-  const [selectedChips, setSelectedChips] = useState([]);
+  const [selections, setSelections] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const questions = [
@@ -93,7 +94,6 @@ const Details = ({ navigation, setSpouseSteps }) => {
       setCurrentIndex(currentIndex + 1);
     }
     animation.current.fadeInUp();
-    setSelectedChips([]);
   };
 
   const goPrevious = () => {
@@ -101,26 +101,51 @@ const Details = ({ navigation, setSpouseSteps }) => {
       setCurrentIndex(currentIndex - 1);
     }
     animation.current.fadeInUp();
-    setSelectedChips([]);
   };
 
   const toggleChip = option => {
-    if (selectedChips.includes(option)) {
-      setSelectedChips(selectedChips.filter(item => item !== option));
+    const qid = currentQuestion.id;
+    const current = selections[qid] || [];
+    if (current.includes(option)) {
+      const updated = current.filter(item => item !== option);
+      setSelections({ ...selections, [qid]: updated });
     } else {
-      if (selectedChips.length < 5) {
-        setSelectedChips([...selectedChips, option]);
+      if (current.length < 5) {
+        const updated = [...current, option];
+        setSelections({ ...selections, [qid]: updated });
+      } else {
+        Alert.alert('You can select up to 5 options');
       }
     }
   };
+  const handleNext = () => {
+    // Ensure every question has at least 5 selections
+    const incomplete = questions.filter(
+      q => !selections[q.id] || selections[q.id].length < 5,
+    );
+    if (incomplete.length > 0) {
+      Alert.alert('Please select at least 5 options for every category');
+      return;
+    }
 
+    // build combined data object of all details
+    const detailsData = {};
+    questions.forEach(q => {
+      detailsData[q.title] = selections[q.id] || [];
+    });
+
+    updateUserProfile({ details: detailsData });
+
+    setSpouseSteps(14);
+    navigation.push('Personality'); // adjust route as needed
+  };
   return (
     <View
       style={{
         flex: 1,
-                backgroundColor: COLOR.other,
-                paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -134,7 +159,6 @@ const Details = ({ navigation, setSpouseSteps }) => {
       <Animatable.Text style={{ fontSize: 14, color: COLOR.grey }}>
         Please select up to 5 options
       </Animatable.Text>
-
       <View style={{ gap: hp('2.5%') }}>
         <Animatable.View animation="fadeInUp" delay={200}>
           <View>
@@ -213,7 +237,7 @@ const Details = ({ navigation, setSpouseSteps }) => {
                   fontWeight: '600',
                 }}
               >
-                {selectedChips.length} of 5
+                {(selections[currentQuestion.id] || []).length} of 5
               </Animatable.Text>
             </View>
           </View>
@@ -235,16 +259,22 @@ const Details = ({ navigation, setSpouseSteps }) => {
                   style={{
                     padding: hp('0.5%'),
                     borderRadius: 100,
-                    backgroundColor: selectedChips.includes(option)
+                    backgroundColor: (
+                      selections[currentQuestion.id] || []
+                    ).includes(option)
                       ? COLOR.primary
                       : COLOR.greySecondaryShade,
                     borderWidth: 1,
-                    borderColor: selectedChips.includes(option)
+                    borderColor: (
+                      selections[currentQuestion.id] || []
+                    ).includes(option)
                       ? COLOR.primary
                       : COLOR.stepUnfinished,
                   }}
                   textStyle={{
-                    color: selectedChips.includes(option)
+                    color: (selections[currentQuestion.id] || []).includes(
+                      option,
+                    )
                       ? COLOR.secondary
                       : COLOR.greyDark,
                   }}
@@ -286,18 +316,16 @@ const Details = ({ navigation, setSpouseSteps }) => {
                 borderRadius: 5,
                 marginHorizontal: 5,
                 backgroundColor:
-                  index === currentIndex
-                    ? COLOR.primary
-                    : COLOR.stepUnfinished,
+                  index === currentIndex ? COLOR.primary : COLOR.stepUnfinished,
               }}
             />
           ))}
         </View>
 
         <TouchableOpacity
-          onPress={() => {setSpouseSteps(14);
-            navigation.push('Personality'); // adjust route as needed
-            }}
+          onPress={() => {
+            handleNext();
+          }}
           style={{
             width: '100%',
             backgroundColor: COLOR.primary,

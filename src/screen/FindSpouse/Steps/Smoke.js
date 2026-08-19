@@ -18,6 +18,7 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Smoke = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -32,13 +33,25 @@ const Smoke = ({ navigation, setSpouseSteps }) => {
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select the suitable option');
+      return;
+    }
+
+    // optional: save to backend here
+    updateUserProfile({ smoking: selected });
+
+    setSpouseSteps(8);
+    navigation.push('Children'); // adjust as needed
+  };
   return (
     <View
       style={{
         flex: 1,
-                backgroundColor: COLOR.other,
-                paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -60,7 +73,7 @@ const Smoke = ({ navigation, setSpouseSteps }) => {
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%')}}
+          style={{ gap: hp('1%') }}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -120,8 +133,7 @@ const Smoke = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(8);
-            navigation.push('Children'); // adjust as needed
+            handleNext();
           }}
           style={{
             width: '100%',

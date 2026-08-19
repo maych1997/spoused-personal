@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Alert,
   Dimensions,
   FlatList,
   Text,
@@ -18,26 +19,33 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Bio = ({ navigation, setSpouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
-  const [selected, setSelected] = useState(0);
-  const genders = [
-    { name: 'Male', id: 1 },
-    { name: 'Female', id: 2 },
-    { name: 'Other', id: 3 },
-  ];
+  const [bio, setBio] = useState(null);
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+  const handleNext = () => {
+    if (bio.length == 0) {
+      Alert.alert('Please add your bio');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ bio: bio });
+
+    setSpouseSteps(16);
+    navigation.push('Congrats');
+  };
   return (
     <View
       style={{
         flex: 1,
-                backgroundColor: COLOR.other,
-                paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -59,7 +67,18 @@ const Bio = ({ navigation, setSpouseSteps }) => {
           style={{ gap: hp('1%'), height: hp('55%') }}
         >
           <TextInput
-            style={{borderWidth:1,borderColor:COLOR.stepUnfinished,borderRadius:10,backgroundColor:COLOR.greySecondaryShade,fontSize:14,padding:hp('2%'),height:hp('55%')}}
+            style={{
+              borderWidth: 1,
+              borderColor: COLOR.stepUnfinished,
+              borderRadius: 10,
+              backgroundColor: COLOR.greySecondaryShade,
+              fontSize: 14,
+              padding: hp('2%'),
+              height: hp('55%'),
+            }}
+            onChangeText={bio => {
+              setBio(bio);
+            }}
             multiline={true} // This enables multi-line input
             placeholder="Write here..."
             textAlignVertical="top" // Aligns text to the top on both iOS and Android
@@ -71,16 +90,15 @@ const Bio = ({ navigation, setSpouseSteps }) => {
         style={{
           position: 'absolute',
           width: '100%',
-          bottom:0,
-          alignSelf:'center'
+          bottom: 0,
+          alignSelf: 'center',
         }}
         animation="bounceIn"
         delay={800}
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(16);
-            navigation.push('Congrats');
+            handleNext();
           }}
           style={{
             width: '100%',

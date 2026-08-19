@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import {
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
+import { updateUserProfile } from '../../../services/saveUserService';
 
 const Religion = ({ navigation, setSpouseSteps }) => {
   const [selected, setSelected] = useState(0);
@@ -31,14 +25,25 @@ const Religion = ({ navigation, setSpouseSteps }) => {
     { name: 'Zoroastrianism', id: 11 },
     { name: 'Other / Indigenous', id: 12 },
   ];
+  const handleNext = () => {
+    if (!selected) {
+      Alert.alert('Please select the religion');
+      return;
+    }
 
+    // optional: save to backend here
+    updateUserProfile({ religion: selected });
+
+    setSpouseSteps(11);
+    navigation.push('Drink'); // adjust next screen
+  };
   return (
     <View
       style={{
-       flex: 1,
-               backgroundColor: COLOR.other,
-               paddingHorizontal: hp('1.5%'),
-                paddingTop: hp('3%'),
+        flex: 1,
+        backgroundColor: COLOR.other,
+        paddingHorizontal: hp('1.5%'),
+        paddingTop: hp('3%'),
       }}
     >
       {/* Title */}
@@ -57,7 +62,7 @@ const Religion = ({ navigation, setSpouseSteps }) => {
         <Animatable.View
           animation="fadeInUp"
           delay={200}
-          style={{ gap: hp('1%')}}
+          style={{ gap: hp('1%') }}
         >
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -114,8 +119,7 @@ const Religion = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setSpouseSteps(11);
-            navigation.push('Drink'); // adjust next screen
+            handleNext();
           }}
           style={{
             width: '100%',
