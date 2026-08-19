@@ -25,6 +25,7 @@ const Photos = ({ navigation, setSteps }) => {
   const [photos, setPhotos] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [blurPhotos, setBlurPhotos] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const data = [...photos, 'extra'];
   const CLOUD_NAME = 'dzyoneiuh';
@@ -83,9 +84,6 @@ const Photos = ({ navigation, setSteps }) => {
       setIsUploading(false);
     } catch (error) {
       setIsUploading(false);
-
-      console.log('Cloudinary Upload Error:', error);
-
       Alert.alert('Error', error.message || 'Failed to upload image');
     }
   };
@@ -100,18 +98,25 @@ const Photos = ({ navigation, setSteps }) => {
         photos: updatedPhotos,
       });
     } catch (error) {
-      console.log(error);
+      Alert.alert(error);
     }
   };
 
   const handleNext = () => {
-    if (photos.length < 2) {
-      Alert.alert('Photos Required', 'Please upload at least 2 photos');
-      return;
+    try {
+      setLoading(true);
+      if (photos.length < 2) {
+        Alert.alert('Photos Required', 'Please upload at least 2 photos');
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      setSteps(2);
+      navigation.push('Birthday');
+    } catch (error) {
+      setLoading(false);
+      Alert.alert(error);
     }
-
-    setSteps(2);
-    navigation.push('Birthday');
   };
   const loadPhotos = async () => {
     try {
@@ -122,7 +127,7 @@ const Photos = ({ navigation, setSteps }) => {
         setBlurPhotos(res.data.blurPhotos || false);
       }
     } catch (error) {
-      console.log('Load Photos Error:', error);
+      Alert.alert(error);
     }
   };
   useEffect(() => {
@@ -136,7 +141,7 @@ const Photos = ({ navigation, setSteps }) => {
         blurPhotos: value,
       });
     } catch (error) {
-      console.log('Blur update error:', error);
+      Alert.alert(error);
     }
   };
   return (
@@ -312,9 +317,10 @@ const Photos = ({ navigation, setSteps }) => {
         >
           <TouchableOpacity
             onPress={handleNext}
+            disabled={loading}
             style={{
               width: '100%',
-              backgroundColor: COLOR.primary,
+              backgroundColor: loading ? '#999' : COLOR.primary,
               height: hp('5.2%'),
               borderRadius: hp('10%'),
               justifyContent: 'center',
@@ -328,7 +334,7 @@ const Photos = ({ navigation, setSteps }) => {
                 color: COLOR.secondary,
               }}
             >
-              Next
+              {loading ? 'Saving...' : 'Next'}
             </Text>
           </TouchableOpacity>
         </Animatable.View>

@@ -54,9 +54,7 @@ const Phone = ({ navigation, setSteps }) => {
         confirmation: 123456,
         phone: fullPhone,
       });
-
     } catch (error) {
-      console.log('Phone error:', error);
       Alert.alert('Error', error.message || 'Something went wrong');
     } finally {
       setLoading(false);
@@ -150,12 +148,11 @@ const Phone = ({ navigation, setSteps }) => {
             disabled={loading}
             style={{
               width: '100%',
-              backgroundColor: COLOR.primary,
+              backgroundColor: loading ? '#999' : COLOR.primary,
               height: hp('5.2%'),
               borderRadius: hp('10%'),
               justifyContent: 'center',
               alignItems: 'center',
-              opacity: loading ? 0.6 : 1,
             }}
           >
             <Text
@@ -165,7 +162,7 @@ const Phone = ({ navigation, setSteps }) => {
                 color: COLOR.secondary,
               }}
             >
-              Next
+              {loading ? 'Saving...' : 'Next'}
             </Text>
           </TouchableOpacity>
         </Animatable.View>

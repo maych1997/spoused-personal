@@ -11,6 +11,7 @@ import { updateUserProfile } from '../../../services/saveUserService';
 
 const Gender = ({ navigation, setSteps }) => {
   const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const genders = [
     { name: 'Male', id: 1 },
@@ -19,16 +20,23 @@ const Gender = ({ navigation, setSteps }) => {
   ];
 
   const handleNext = () => {
-    if (!selected) {
-      Alert.alert('Please select your gender');
-      return;
+    try {
+      setLoading(true);
+      if (!selected) {
+        Alert.alert('Please select your gender');
+        setLoading(false);
+        return;
+      }
+
+      // optional: save to backend here
+      updateUserProfile({ gender: selected });
+      setLoading(false);
+      setSteps(4);
+      navigation.push('Phone');
+    } catch (error) {
+      Alert.alert(error);
+      setLoading(false);
     }
-
-    // optional: save to backend here
-    updateUserProfile({ gender: selected });
-
-    setSteps(4);
-    navigation.push('Phone');
   };
 
   return (
@@ -65,8 +73,12 @@ const Gender = ({ navigation, setSteps }) => {
           </Animatable.Text>
 
           <View style={{ paddingTop: hp('2.5%'), gap: hp('2.5%') }}>
-            <Animatable.View animation="fadeInUp" delay={200} style={{ gap: hp('1%') }}>
-              {genders.map((gender) => (
+            <Animatable.View
+              animation="fadeInUp"
+              delay={200}
+              style={{ gap: hp('1%') }}
+            >
+              {genders.map(gender => (
                 <TouchableOpacity
                   key={gender.id}
                   onPress={() => setSelected(gender.id)}
@@ -84,7 +96,9 @@ const Gender = ({ navigation, setSteps }) => {
                   </Text>
 
                   {gender.id === selected ? (
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <View
+                      style={{ alignItems: 'center', justifyContent: 'center' }}
+                    >
                       <View style={{ position: 'absolute', zIndex: 1 }}>
                         <Tick />
                       </View>
@@ -103,16 +117,15 @@ const Gender = ({ navigation, setSteps }) => {
         <Animatable.View animation="bounceIn" delay={800}>
           <TouchableOpacity
             onPress={handleNext}
+            disabled={loading}
             style={{
               width: '100%',
-              backgroundColor: COLOR.primary,
+              backgroundColor: loading ? '#999' : COLOR.primary,
               height: hp('5.2%'),
               borderRadius: hp('10%'),
               justifyContent: 'center',
               alignItems: 'center',
-              opacity: selected ? 1 : 0.6,
             }}
-            disabled={!selected}
           >
             <Text
               style={{
@@ -121,7 +134,7 @@ const Gender = ({ navigation, setSteps }) => {
                 color: COLOR.secondary,
               }}
             >
-              Next
+              {loading ? 'Saving...' : 'Next'}
             </Text>
           </TouchableOpacity>
         </Animatable.View>

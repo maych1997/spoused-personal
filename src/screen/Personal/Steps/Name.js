@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
@@ -17,7 +17,11 @@ const Name = ({ navigation, setSteps }) => {
 
   const handleNext = async () => {
     try {
-      if (!name.trim()) return;
+      if (!name.trim()) {
+        Alert.alert('Please enter your name');
+        setLoading(false);
+        return;
+      }
 
       setLoading(true);
 
@@ -29,7 +33,7 @@ const Name = ({ navigation, setSteps }) => {
       setSteps(1);
       navigation.push('Photos');
     } catch (error) {
-      console.log('Error saving name:', error);
+      Alert.alert(error);
     } finally {
       setLoading(false);
     }

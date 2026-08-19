@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import {
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Animatable from 'react-native-animatable';
 import DatePicker from 'react-native-date-picker';
 import { COLOR } from '../../../utils/colors';
@@ -12,7 +10,7 @@ const Birthday = ({ navigation, setSteps }) => {
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
-  const calculateAge = (birthDate) => {
+  const calculateAge = birthDate => {
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
 
@@ -36,7 +34,8 @@ const Birthday = ({ navigation, setSteps }) => {
 
       // ❌ enforce minimum age rule
       if (age < 18) {
-        alert('You must be at least 18 years old to continue');
+        Alert.alert('You must be at least 18 years old to continue');
+        setLoading(false);
         return;
       }
 
@@ -50,7 +49,7 @@ const Birthday = ({ navigation, setSteps }) => {
       setSteps(3);
       navigation.push('Gender');
     } catch (error) {
-      console.log('Error saving DOB:', error);
+      Alert.alert(error);
     } finally {
       setLoading(false);
     }
@@ -115,9 +114,7 @@ const Birthday = ({ navigation, setSteps }) => {
             gap: hp('1%'),
           }}
         >
-          <Text style={{ fontSize: 12, color: COLOR.grey }}>
-            You're
-          </Text>
+          <Text style={{ fontSize: 12, color: COLOR.grey }}>You're</Text>
 
           <Text
             style={{
@@ -137,10 +134,13 @@ const Birthday = ({ navigation, setSteps }) => {
           delay={800}
         >
           <TouchableOpacity
-            onPress={()=>{handleNext()}}
+            onPress={() => {
+              handleNext();
+            }}
+            disabled={loading}
             style={{
               width: '100%',
-              backgroundColor: COLOR.primary,
+              backgroundColor: loading ? '#999' : COLOR.primary,
               height: hp('5.2%'),
               borderRadius: hp('10%'),
               justifyContent: 'center',
@@ -154,7 +154,7 @@ const Birthday = ({ navigation, setSteps }) => {
                 color: COLOR.secondary,
               }}
             >
-              Next
+              {loading ? 'Saving...' : 'Next'}
             </Text>
           </TouchableOpacity>
         </Animatable.View>
