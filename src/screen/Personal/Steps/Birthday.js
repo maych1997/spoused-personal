@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Animatable from 'react-native-animatable';
@@ -6,7 +6,7 @@ import DatePicker from 'react-native-date-picker';
 import { COLOR } from '../../../utils/colors';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Birthday = ({ navigation, setSteps }) => {
+const Birthday = ({ navigation, setSteps,steps, clicked,setClicked }) => {
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
@@ -27,6 +27,7 @@ const Birthday = ({ navigation, setSteps }) => {
   };
 
   const handleNext = async () => {
+    setClicked(false);
     try {
       if (!date) return;
 
@@ -46,7 +47,7 @@ const Birthday = ({ navigation, setSteps }) => {
         age: age,
       });
 
-      setSteps(3);
+      setSteps(steps+1);
       navigation.push('Gender');
     } catch (error) {
       Alert.alert(error);
@@ -54,6 +55,11 @@ const Birthday = ({ navigation, setSteps }) => {
       setLoading(false);
     }
   };
+    useEffect(()=>{
+      if(clicked){
+        navigation.pop();
+      }
+    },[clicked])
   return (
     <View
       style={{

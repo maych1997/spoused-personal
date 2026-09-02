@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Text,
+  Alert,
   TextInput,
   TouchableOpacity,
   View,
@@ -20,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Profession = ({ navigation, setSpouseSteps }) => {
+const Profession = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const professions = [
@@ -73,6 +74,7 @@ const Profession = ({ navigation, setSpouseSteps }) => {
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your profession');
       return;
@@ -81,9 +83,15 @@ const Profession = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ profession: selected });
 
-    setSpouseSteps(1);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Describe');
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

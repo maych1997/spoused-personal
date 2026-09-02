@@ -1,9 +1,9 @@
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
-import SplashStack from './src/stack/SplashStack';
 import { COLOR } from './src/utils/colors';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {AuthProvider} from './src/provider/AuthContext';
+import AuthStack from './src/stack/AuthStack';
 
 export default function App() {
   return (
@@ -11,7 +11,7 @@ export default function App() {
       <GestureHandlerRootView>
         <AuthProvider>
           <NavigationContainer>
-            <SplashStack></SplashStack>
+            <AuthStack></AuthStack>
           </NavigationContainer>
         </AuthProvider>
       </GestureHandlerRootView>

@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Splash from '../../screen/Auth/Splash';
 import Login from '../../screen/Auth/Login';
 import ForgotPassword from '../../screen/Auth/ForgotPassword';
 import Authentication from '../../screen/Auth/Authentication';
@@ -10,11 +11,9 @@ import AuthHeader from '../../components/AuthHeader';
 import { COLOR } from '../../utils/colors';
 
 const Stack = createNativeStackNavigator();
-const AuthStack = () => {
+const Auth = () => {
   return (
-    <SafeAreaView
-      style={{ flex: 1,backgroundColor:COLOR.other}}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLOR.other }}>
       <Stack.Navigator
         initialRouteName="Login"
         screenOptions={{
@@ -23,6 +22,10 @@ const AuthStack = () => {
           },
         }}
       >
+        <Stack.Screen
+          component={Splash}
+          name="Splash"
+        ></Stack.Screen>
         <Stack.Screen component={Login} name="Login"></Stack.Screen>
         <Stack.Screen
           component={ForgotPassword}
@@ -33,14 +36,9 @@ const AuthStack = () => {
           name="Authentication"
         ></Stack.Screen>
         <Stack.Screen component={SetPassword} name="SetPassword"></Stack.Screen>
-        <Stack.Screen
-          component={PersonalStack}
-          options={{ headerShown: false }}
-          name="PersonalStack"
-        ></Stack.Screen>
       </Stack.Navigator>
     </SafeAreaView>
   );
 };
 
-export default AuthStack;
+export default Auth;

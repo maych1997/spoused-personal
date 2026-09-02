@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Text,
+  Alert,
   TextInput,
   TouchableOpacity,
   View,
@@ -20,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Gender = ({ navigation, setSpouseSteps }) => {
+const Gender = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const genders = [
@@ -33,6 +34,7 @@ const Gender = ({ navigation, setSpouseSteps }) => {
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your Gender Preference');
       return;
@@ -41,9 +43,15 @@ const Gender = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ genderPreference: selected });
 
-    setSpouseSteps(7);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Smoke');
   };
+
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
 
   return (
     <View

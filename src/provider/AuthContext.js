@@ -1,25 +1,20 @@
-import auth from "@react-native-firebase/auth";
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from 'react';
+import auth from '@react-native-firebase/auth';
 
-const AuthContext = React.createContext();
+export const AuthContext = createContext({
+  user: null,
+});
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
+    const unsubscribe = auth().onAuthStateChanged(setUser);
+
     return unsubscribe;
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
 }

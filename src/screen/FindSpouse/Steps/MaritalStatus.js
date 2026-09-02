@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 import {
@@ -20,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const MaritalStatus = ({ navigation, setSpouseSteps }) => {
+const MaritalStatus = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const maritalStatus = [
@@ -34,6 +35,7 @@ const MaritalStatus = ({ navigation, setSpouseSteps }) => {
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your marital status');
       return;
@@ -42,9 +44,15 @@ const MaritalStatus = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ maitalStatus:selected });
 
-    setSpouseSteps(6);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Gender');
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

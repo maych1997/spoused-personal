@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View,Alert } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Children = ({ navigation, setSpouseSteps }) => {
+const Children = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [selected, setSelected] = useState(0);
 
   // Updated options -> Yes / No / Maybe
@@ -18,6 +18,7 @@ const Children = ({ navigation, setSpouseSteps }) => {
     { name: 'Maybe', id: 3 },
   ];
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -26,9 +27,15 @@ const Children = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ children: selected });
 
-    setSpouseSteps(9);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('LookingFor'); // update next step screen
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

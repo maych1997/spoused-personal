@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View,Alert } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const LookingFor = ({ navigation, setSpouseSteps }) => {
+const LookingFor = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [selected, setSelected] = useState([]);
 
   const looking = [
@@ -32,6 +32,7 @@ const LookingFor = ({ navigation, setSpouseSteps }) => {
   };
 
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -40,9 +41,15 @@ const LookingFor = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ purpose: selected });
 
-    setSpouseSteps(10);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Religion'); // adjust route as needed
   };
+
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
 
   return (
     <View

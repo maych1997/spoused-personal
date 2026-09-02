@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -13,7 +13,7 @@ import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-rig
 import { Chip } from 'react-native-paper';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Personality = ({ navigation, setSpouseSteps }) => {
+const Personality = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const animation = useRef();
   const [selectedChips, setSelectedChips] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,6 +69,7 @@ const Personality = ({ navigation, setSpouseSteps }) => {
     }
   };
   const handleNext = () => {
+    setClicked(false);
     if (selectedChips.length == 0) {
       Alert.alert('Please select the options');
       return;
@@ -80,9 +81,15 @@ const Personality = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ personality: selectedChips });
 
-    setSpouseSteps(15);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Bio'); // adjust route as needed
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

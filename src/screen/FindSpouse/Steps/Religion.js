@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View,Alert } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Religion = ({ navigation, setSpouseSteps }) => {
+const Religion = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [selected, setSelected] = useState(0);
 
   const religion = [
@@ -26,6 +26,7 @@ const Religion = ({ navigation, setSpouseSteps }) => {
     { name: 'Other / Indigenous', id: 12 },
   ];
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the religion');
       return;
@@ -34,9 +35,15 @@ const Religion = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ religion: selected });
 
-    setSpouseSteps(11);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Drink'); // adjust next screen
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

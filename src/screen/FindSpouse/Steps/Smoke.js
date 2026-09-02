@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 import {
@@ -20,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Smoke = ({ navigation, setSpouseSteps }) => {
+const Smoke = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
 
@@ -34,6 +35,7 @@ const Smoke = ({ navigation, setSpouseSteps }) => {
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -42,9 +44,15 @@ const Smoke = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ smoking: selected });
 
-    setSpouseSteps(8);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Children'); // adjust as needed
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

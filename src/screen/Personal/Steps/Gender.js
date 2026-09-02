@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Alert } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
@@ -9,7 +9,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Gender = ({ navigation, setSteps }) => {
+const Gender = ({ navigation, setSteps,steps, clicked,setClicked }) => {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,6 +20,7 @@ const Gender = ({ navigation, setSteps }) => {
   ];
 
   const handleNext = () => {
+    setClicked(false);
     try {
       setLoading(true);
       if (!selected) {
@@ -31,14 +32,18 @@ const Gender = ({ navigation, setSteps }) => {
       // optional: save to backend here
       updateUserProfile({ gender: selected });
       setLoading(false);
-      setSteps(4);
+      setSteps(steps+1);
       navigation.push('Phone');
     } catch (error) {
       Alert.alert(error);
       setLoading(false);
     }
   };
-
+  useEffect(()=>{
+    if(clicked){
+      navigation.pop();
+    }
+  },[clicked])
   return (
     <View
       style={{

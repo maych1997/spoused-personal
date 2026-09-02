@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Image,
   Text,
+  Alert,
   TextInput,
   TouchableOpacity,
   View,
@@ -20,7 +21,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 
-const Congrats = ({ navigation, setSpouseSteps }) => {
+const Congrats = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const genders = [
@@ -31,6 +32,12 @@ const Congrats = ({ navigation, setSpouseSteps }) => {
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
 
   return (
     <View
@@ -103,6 +110,7 @@ const Congrats = ({ navigation, setSpouseSteps }) => {
       >
         <TouchableOpacity
           onPress={() => {
+            setClicked(false);
             navigation.push('DashboardStack');
           }}
           style={{

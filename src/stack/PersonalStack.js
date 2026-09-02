@@ -8,79 +8,111 @@ import { COLOR } from '../utils/colors';
 import { Text, View } from 'react-native';
 import Tick from '../assets/icons/tick';
 import SpouseHeader from '../components/SpouseHeader';
-import { widthPercentageToDP as wp,heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import { Dimensions } from 'react-native';
+import Name from '../screen/Personal/Steps/Name';
+import Photos from '../screen/Personal/Steps/Photos';
+import Birthday from '../screen/Personal/Steps/Birthday';
+import Gender from '../screen/Personal/Steps/Gender';
+import Phone from '../screen/Personal/Steps/Phone';
+import Verification from '../screen/Personal/Steps/Verification';
 const { width } = Dimensions.get('window');
 
 const Stack = createNativeStackNavigator();
 
 const PersonalStack = () => {
   const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-  const [steps, setSteps] = useState(0);
   const [spouseSteps, setSpouseSteps] = useState(0);
+  const [steps, setSteps] = useState(1);
+  const [clicked, setClicked] = useState(false);
+  const [spouseClicked, setSpouseClicked] = useState(false);
+  const navigateBack = () => {
+    setClicked(!clicked);
+  };
+  const navigateSpouseBack = () => {
+    setSpouseClicked(!spouseClicked);
+  };
   return (
-    <Stack.Navigator initialRouteName="Personal">
-      <Stack.Screen
-        name="Personal"
-        options={{
-          header: ({ navigation }) => (
+    <Stack.Navigator
+      initialRouteName="Personal"
+      screenOptions={{
+        header: () => {
+          return (
             <>
               <PersonalHeader
+                navigateBack={navigateBack}
                 setSteps={setSteps}
                 steps={steps}
-                navigation={navigation}
                 title="Tell us a bit about yourself"
               />
               {steps < 5 && (
-                <View style={{backgroundColor: COLOR.other, paddingVertical: hp('0.5%')}}>
+                <View
+                  style={{
+                    backgroundColor: COLOR.other,
+                    paddingVertical: hp('0.5%'),
+                  }}
+                >
                   <StepIndicator
-                  currentPosition={steps}
-                  renderStepIndicator={({ stepStatus, position }) => {
-                    return (
-                      <View>
-                        {stepStatus == 'finished' ? (
-                          <Tick></Tick>
-                        ) : (
-                          <Text style={{ fontSize: 14, fontWeight: '600' }}>
-                            {position + 1}
-                          </Text>
-                        )}
-                      </View>
-                    );
-                  }}
-                  customStyles={{
-                    stepStrokeWidth: 0,
-                    separatorStrokeWidth: 2,
-                    stepStrokeCurrentColor: COLOR.primary,
-                    stepIndicatorUnFinishedColor: COLOR.stepUnfinished,
-                    separatorFinishedColor: COLOR.primary,
-                    separatorUnFinishedColor: COLOR.stepUnfinished,
-                    stepIndicatorCurrentColor: COLOR.primary,
-                    stepIndicatorFinishedColor: COLOR.primary,
-                    stepIndicatorLabelFinishedColor: COLOR.secondary,
-                    stepIndicatorLabelUnFinishedColor: COLOR.stepUnfinished,
-                    stepStrokeFinishedColor: COLOR.stepUnfinished,
-                  }}
-                  labels={[]}
-                ></StepIndicator>
+                    currentPosition={steps - 1}
+                    renderStepIndicator={({ stepStatus, position }) => {
+                      return (
+                        <View>
+                          {stepStatus == 'finished' ? (
+                            <Tick></Tick>
+                          ) : (
+                            <Text style={{ fontSize: 14, fontWeight: '600' }}>
+                              {position + 1}
+                            </Text>
+                          )}
+                        </View>
+                      );
+                    }}
+                    customStyles={{
+                      stepStrokeWidth: 0,
+                      separatorStrokeWidth: 2,
+                      stepStrokeCurrentColor: COLOR.primary,
+                      stepIndicatorUnFinishedColor: COLOR.stepUnfinished,
+                      separatorFinishedColor: COLOR.primary,
+                      separatorUnFinishedColor: COLOR.stepUnfinished,
+                      stepIndicatorCurrentColor: COLOR.primary,
+                      stepIndicatorFinishedColor: COLOR.primary,
+                      stepIndicatorLabelFinishedColor: COLOR.secondary,
+                      stepIndicatorLabelUnFinishedColor: COLOR.stepUnfinished,
+                      stepStrokeFinishedColor: COLOR.stepUnfinished,
+                    }}
+                    labels={[]}
+                  ></StepIndicator>
                 </View>
               )}
             </>
-          ),
-        }}
-      >
-        {props => <Personal {...props} setSteps={setSteps} />}
+          );
+        },
+      }}
+    >
+      <Stack.Screen name="Personal">
+        {props => (
+          <Personal
+            {...props}
+            steps={steps}
+            clicked={clicked}
+            setClicked={setClicked}
+            setSteps={setSteps}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen
         name="Spouse"
         options={{
-          header: ({ navigation }) =>
+          header: () =>
             spouseSteps < 16 ? (
               <>
                 <SpouseHeader
                   setSpouseSteps={setSpouseSteps}
                   spouseSteps={spouseSteps}
-                  navigation={navigation}
+                  navigateBack={navigateSpouseBack}
                   title={
                     spouseSteps < 7
                       ? 'Help us find better matches for you'
@@ -123,6 +155,8 @@ const PersonalStack = () => {
           <Spouse
             {...props}
             labels={labels}
+            clicked={spouseClicked}
+            setClicked={setSpouseClicked}
             spouseSteps={spouseSteps}
             setSpouseSteps={setSpouseSteps}
           />

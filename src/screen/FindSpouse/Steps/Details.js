@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -13,7 +13,7 @@ import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-rig
 import { Chip } from 'react-native-paper';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Details = ({ navigation, setSpouseSteps }) => {
+const Details = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const animation = useRef();
   const [selections, setSelections] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -119,6 +119,7 @@ const Details = ({ navigation, setSpouseSteps }) => {
     }
   };
   const handleNext = () => {
+    setClicked(false);
     // Ensure every question has at least 5 selections
     const incomplete = questions.filter(
       q => !selections[q.id] || selections[q.id].length < 5,
@@ -136,9 +137,15 @@ const Details = ({ navigation, setSpouseSteps }) => {
 
     updateUserProfile({ details: detailsData });
 
-    setSpouseSteps(14);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Personality'); // adjust route as needed
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

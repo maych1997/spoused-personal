@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 // 🔥 IMPORT YOUR SERVICE
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Name = ({ navigation, setSteps }) => {
+const Name = ({ navigation, setSteps,steps, clicked,setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,6 +16,7 @@ const Name = ({ navigation, setSteps }) => {
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
   const handleNext = async () => {
+    setClicked(false)
     try {
       if (!name.trim()) {
         Alert.alert('Please enter your name');
@@ -30,7 +31,7 @@ const Name = ({ navigation, setSteps }) => {
         name: name.trim(),
       });
 
-      setSteps(1);
+      setSteps(steps+1);
       navigation.push('Photos');
     } catch (error) {
       Alert.alert(error);
@@ -38,6 +39,12 @@ const Name = ({ navigation, setSteps }) => {
       setLoading(false);
     }
   };
+
+  useEffect(()=>{
+    if(clicked){
+      navigation.pop();
+    }
+  },[clicked])
 
   return (
     <View
@@ -98,7 +105,7 @@ const Name = ({ navigation, setSteps }) => {
         {/* BUTTON */}
         <Animatable.View animation="bounceIn" delay={800}>
           <TouchableOpacity
-            onPress={handleNext}
+            onPress={()=>{handleNext()}}
             disabled={loading}
             style={{
               width: '100%',

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View,Alert } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Drink = ({ navigation, setSpouseSteps }) => {
+const Drink = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [selected, setSelected] = useState(0);
 
   const options = [
@@ -16,6 +16,7 @@ const Drink = ({ navigation, setSpouseSteps }) => {
     { name: 'No', id: 2 },
   ];
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -24,9 +25,15 @@ const Drink = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ drinking: selected });
 
-    setSpouseSteps(12);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Zodiac'); // adjust route as needed
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Name from '../../screen/Personal/Steps/Name';
 import Photos from '../../screen/Personal/Steps/Photos';
@@ -9,29 +9,29 @@ import Verification from '../../screen/Personal/Steps/Verification';
 
 const Stack = createNativeStackNavigator();
 
-const Personal = ({ setSteps }) => {
+const Personal = ({ steps, setSteps,clicked,setClicked }) => {
   return (
     <Stack.Navigator
       initialRouteName="Name"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Name">
-        {props => <Name {...props} setSteps={setSteps} />}
+        {props => <Name {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Photos">
-        {props => <Photos {...props} setSteps={setSteps} />}
+        {props => <Photos {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
-       <Stack.Screen name="Birthday">
-        {props => <Birthday {...props} setSteps={setSteps} />}
+      <Stack.Screen name="Birthday">
+        {props => <Birthday {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
-       <Stack.Screen name="Gender">
-        {props => <Gender {...props} setSteps={setSteps} />}
+      <Stack.Screen name="Gender">
+        {props => <Gender {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Phone">
-        {props => <Phone {...props} setSteps={setSteps} />}
+        {props => <Phone {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Verification">
-        {props => <Verification {...props} setSteps={setSteps}/>}
+        {props => <Verification {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

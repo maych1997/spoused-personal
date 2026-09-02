@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 import {
@@ -20,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Describe = ({ navigation, setSpouseSteps }) => {
+const Describe = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const ethnicities = [
@@ -68,6 +69,7 @@ const Describe = ({ navigation, setSpouseSteps }) => {
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your ethnicity');
       return;
@@ -76,9 +78,15 @@ const Describe = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ ethnicity: selected });
 
-    setSpouseSteps(2);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Degree');
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

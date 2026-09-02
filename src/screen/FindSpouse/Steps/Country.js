@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   Text,
   TextInput,
   TouchableOpacity,
+  Alert,
   View,
 } from 'react-native';
 import {
@@ -20,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Country = ({ navigation, setSpouseSteps }) => {
+const Country = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const countries = [
@@ -224,6 +225,7 @@ const Country = ({ navigation, setSpouseSteps }) => {
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
+    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your country');
       return;
@@ -232,9 +234,15 @@ const Country = ({ navigation, setSpouseSteps }) => {
     // optional: save to backend here
     updateUserProfile({ country: selected });
 
-    setSpouseSteps(4);
+    setSpouseSteps(spouseSteps + 1);
     navigation.push('Height');
   };
+  useEffect(() => {
+    if (clicked && navigation.isFocused()) {
+      navigation.pop();
+    }
+  }, [clicked]);
+
   return (
     <View
       style={{

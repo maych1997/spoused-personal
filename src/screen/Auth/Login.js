@@ -67,7 +67,7 @@ const Login = ({ navigation }) => {
       if (result.success) {
         console.log('Result::::::',result.success);
         // ✅ LOGIN SUCCESS
-        navigation.push('PersonalStack');
+        // navigation.push('PersonalStack');
       }
     } catch (error) {
       console.log('Firebase Login Error:', error);
