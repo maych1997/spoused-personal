@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator();
 const PersonalStack = () => {
   const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   const [spouseSteps, setSpouseSteps] = useState(0);
-  const [steps, setSteps] = useState(1);
+  const [steps, setSteps] = useState(0);
   const [clicked, setClicked] = useState(false);
   const [spouseClicked, setSpouseClicked] = useState(false);
   const navigateBack = () => {
@@ -56,7 +56,7 @@ const PersonalStack = () => {
                   }}
                 >
                   <StepIndicator
-                    currentPosition={steps - 1}
+                    currentPosition={steps}
                     renderStepIndicator={({ stepStatus, position }) => {
                       return (
                         <View>
