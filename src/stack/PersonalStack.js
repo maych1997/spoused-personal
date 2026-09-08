@@ -64,7 +64,7 @@ const PersonalStack = () => {
                             <Tick></Tick>
                           ) : (
                             <Text style={{ fontSize: 14, fontWeight: '600' }}>
-                              {position + 1}
+                              {position+1}
                             </Text>
                           )}
                         </View>

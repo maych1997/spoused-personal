@@ -13,7 +13,7 @@ import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
 const PersonalHeader = ({ steps, setSteps, title, navigation }) => {
   const handleBack = () => {
-    setSteps(prev => (prev > 1 ? prev - 1 : prev));
+    setSteps(prev => (prev > 0 ? prev - 1 : 0));
 
     if (steps === 1) {
       return navigation.navigate('Personal', {
