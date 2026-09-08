@@ -39,16 +39,16 @@ const PersonalStack = () => {
     <Stack.Navigator
       initialRouteName="Personal"
       screenOptions={{
-        header: () => {
+        header: ({navigation}) => {
           return (
             <>
               <PersonalHeader
-                navigateBack={navigateBack}
+                navigation={navigation}
                 setSteps={setSteps}
                 steps={steps}
                 title="Tell us a bit about yourself"
               />
-              {steps < 5 && (
+              {steps <5 && (
                 <View
                   style={{
                     backgroundColor: COLOR.other,

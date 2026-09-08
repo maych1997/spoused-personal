@@ -11,13 +11,40 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import { useNavigation } from '@react-navigation/native';
-const PersonalHeader = ({ steps, setSteps, title, navigateBack}) => {
+const PersonalHeader = ({ steps, setSteps, title, navigation }) => {
   const handleBack = () => {
-  setSteps(prev => prev > 1 ? prev - 1 : prev);
-  if(steps>1){
-    navigateBack();
-  }
-};
+    setSteps(prev => (prev > 1 ? prev - 1 : prev));
+
+    if (steps === 1) {
+      return navigation.navigate('Personal', {
+        screen: 'Name',
+      });
+    }
+
+    if (steps === 2) {
+      return navigation.navigate('Personal', {
+        screen: 'Photos',
+      });
+    }
+
+    if (steps === 3) {
+      return navigation.navigate('Personal', {
+        screen: 'Birthday',
+      });
+    }
+
+    if (steps === 4) {
+      return navigation.navigate('Personal', {
+        screen: 'Gender',
+      });
+    }
+
+    if (steps === 5) {
+      return navigation.navigate('Personal', {
+        screen: 'Phone',
+      });
+    }
+  };
   return (
     <View
       style={{
@@ -30,9 +57,7 @@ const PersonalHeader = ({ steps, setSteps, title, navigateBack}) => {
       }}
     >
       <View style={{ display: 'flex', gap: wp('4%'), flexDirection: 'row' }}>
-        <TouchableOpacity
-          onPress={handleBack}
-        >
+        <TouchableOpacity onPress={handleBack}>
           <Back></Back>
         </TouchableOpacity>
         <Animatable.Text
