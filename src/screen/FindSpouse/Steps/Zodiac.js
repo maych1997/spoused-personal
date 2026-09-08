@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Zodiac = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Zodiac = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [selected, setSelected] = useState([]);
 
   const zodiacs = [
@@ -34,7 +34,6 @@ const Zodiac = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }
     }
   };
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -46,11 +45,6 @@ const Zodiac = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Details'); // adjust route as needed
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

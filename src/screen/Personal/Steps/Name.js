@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 // 🔥 IMPORT YOUR SERVICE
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Name = ({ navigation, setSteps,steps, clicked,setClicked }) => {
+const Name = ({ navigation, setSteps,steps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,6 @@ const Name = ({ navigation, setSteps,steps, clicked,setClicked }) => {
     focusedField === fieldName ? COLOR.primary : '#0000000D';
 
   const handleNext = async () => {
-    setClicked(false)
     try {
       if (!name.trim()) {
         Alert.alert('Please enter your name');
@@ -39,12 +38,6 @@ const Name = ({ navigation, setSteps,steps, clicked,setClicked }) => {
       setLoading(false);
     }
   };
-
-  useEffect(()=>{
-    if(clicked){
-      navigation.pop();
-    }
-  },[clicked])
 
   return (
     <View

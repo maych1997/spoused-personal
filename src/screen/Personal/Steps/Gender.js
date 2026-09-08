@@ -9,7 +9,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Gender = ({ navigation, setSteps,steps, clicked,setClicked }) => {
+const Gender = ({ navigation, setSteps,steps}) => {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +20,6 @@ const Gender = ({ navigation, setSteps,steps, clicked,setClicked }) => {
   ];
 
   const handleNext = () => {
-    setClicked(false);
     try {
       setLoading(true);
       if (!selected) {
@@ -39,11 +38,6 @@ const Gender = ({ navigation, setSteps,steps, clicked,setClicked }) => {
       setLoading(false);
     }
   };
-  useEffect(()=>{
-    if(clicked){
-      navigation.pop();
-    }
-  },[clicked])
   return (
     <View
       style={{

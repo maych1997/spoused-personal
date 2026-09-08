@@ -21,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Degree = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Degree = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const degrees = [
@@ -54,7 +54,6 @@ const Degree = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your degree');
       return;
@@ -66,11 +65,6 @@ const Degree = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Country');
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

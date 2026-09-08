@@ -13,7 +13,7 @@ import { updateUserProfile } from '../../../services/saveUserService';
 // 🔥 ADDED Firebase Auth
 import auth from '@react-native-firebase/auth';
 
-const Phone = ({ navigation, setSteps,steps, clicked,setClicked }) => {
+const Phone = ({ navigation, setSteps }) => {
   const [value, setValue] = useState('');
   const [country, setCountry] = useState(null);
 
@@ -24,7 +24,6 @@ const Phone = ({ navigation, setSteps,steps, clicked,setClicked }) => {
 
   // 🔥 UPDATED ONLY THIS FUNCTION
   const handleNext = async () => {
-    setClicked(false)
     try {
       // ✅ validation added
       if (!value || value.length < 10) {
@@ -61,11 +60,6 @@ const Phone = ({ navigation, setSteps,steps, clicked,setClicked }) => {
       setLoading(false);
     }
   };
-  useEffect(()=>{
-    if(clicked){
-      navigation.pop();
-    }
-  },[clicked])
   return (
     <View
       style={{

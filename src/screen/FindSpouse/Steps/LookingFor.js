@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const LookingFor = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const LookingFor = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [selected, setSelected] = useState([]);
 
   const looking = [
@@ -32,7 +32,6 @@ const LookingFor = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClick
   };
 
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -44,12 +43,6 @@ const LookingFor = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClick
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Religion'); // adjust route as needed
   };
-
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

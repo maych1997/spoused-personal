@@ -9,29 +9,29 @@ import Verification from '../../screen/Personal/Steps/Verification';
 
 const Stack = createNativeStackNavigator();
 
-const Personal = ({ steps, setSteps,clicked,setClicked }) => {
+const Personal = ({ steps, setSteps }) => {
   return (
     <Stack.Navigator
       initialRouteName="Name"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Name">
-        {props => <Name {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
+        {props => <Name {...props} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Photos">
-        {props => <Photos {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
+        {props => <Photos {...props} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Birthday">
-        {props => <Birthday {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
+        {props => <Birthday {...props} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Gender">
-        {props => <Gender {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
+        {props => <Gender {...props} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Phone">
-        {props => <Phone {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
+        {props => <Phone {...props} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
       <Stack.Screen name="Verification">
-        {props => <Verification {...props} clicked={clicked} setClicked={setClicked} setSteps={setSteps} steps={steps} />}
+        {props => <Verification {...props} setSteps={setSteps} steps={steps} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

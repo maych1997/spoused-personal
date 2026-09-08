@@ -21,7 +21,7 @@ import {
 } from '../../../services/saveUserService';
 import { getUid } from '../../../services/saveUserService';
 
-const Photos = ({ navigation, setSteps, steps, clicked, setClicked }) => {
+const Photos = ({ navigation, setSteps, steps}) => {
   const [photos, setPhotos] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [blurPhotos, setBlurPhotos] = useState(false);
@@ -103,7 +103,6 @@ const Photos = ({ navigation, setSteps, steps, clicked, setClicked }) => {
   };
 
   const handleNext = () => {
-    setClicked(false);
     try {
       setLoading(true);
       if (photos.length < 2) {
@@ -145,11 +144,7 @@ const Photos = ({ navigation, setSteps, steps, clicked, setClicked }) => {
       Alert.alert(error);
     }
   };
-    useEffect(()=>{
-      if(clicked){
-        navigation.pop();
-      }
-    },[clicked])
+  
   return (
     <View
       style={{

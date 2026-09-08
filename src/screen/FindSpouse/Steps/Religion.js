@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Religion = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Religion = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [selected, setSelected] = useState(0);
 
   const religion = [
@@ -26,7 +26,6 @@ const Religion = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked
     { name: 'Other / Indigenous', id: 12 },
   ];
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the religion');
       return;
@@ -38,11 +37,6 @@ const Religion = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Drink'); // adjust next screen
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

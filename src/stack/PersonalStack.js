@@ -13,12 +13,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Dimensions } from 'react-native';
-import Name from '../screen/Personal/Steps/Name';
-import Photos from '../screen/Personal/Steps/Photos';
-import Birthday from '../screen/Personal/Steps/Birthday';
-import Gender from '../screen/Personal/Steps/Gender';
-import Phone from '../screen/Personal/Steps/Phone';
-import Verification from '../screen/Personal/Steps/Verification';
 const { width } = Dimensions.get('window');
 
 const Stack = createNativeStackNavigator();
@@ -27,14 +21,6 @@ const PersonalStack = () => {
   const labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   const [spouseSteps, setSpouseSteps] = useState(0);
   const [steps, setSteps] = useState(0);
-  const [clicked, setClicked] = useState(false);
-  const [spouseClicked, setSpouseClicked] = useState(false);
-  const navigateBack = () => {
-    setClicked(!clicked);
-  };
-  const navigateSpouseBack = () => {
-    setSpouseClicked(!spouseClicked);
-  };
   return (
     <Stack.Navigator
       initialRouteName="Personal"
@@ -97,8 +83,6 @@ const PersonalStack = () => {
           <Personal
             {...props}
             steps={steps}
-            clicked={clicked}
-            setClicked={setClicked}
             setSteps={setSteps}
           />
         )}
@@ -106,13 +90,13 @@ const PersonalStack = () => {
       <Stack.Screen
         name="Spouse"
         options={{
-          header: () =>
+          header: ({navigation}) =>
             spouseSteps < 16 ? (
               <>
                 <SpouseHeader
                   setSpouseSteps={setSpouseSteps}
                   spouseSteps={spouseSteps}
-                  navigateBack={navigateSpouseBack}
+                  navigation={navigation}
                   title={
                     spouseSteps < 7
                       ? 'Help us find better matches for you'
@@ -155,8 +139,6 @@ const PersonalStack = () => {
           <Spouse
             {...props}
             labels={labels}
-            clicked={spouseClicked}
-            setClicked={setSpouseClicked}
             spouseSteps={spouseSteps}
             setSpouseSteps={setSpouseSteps}
           />

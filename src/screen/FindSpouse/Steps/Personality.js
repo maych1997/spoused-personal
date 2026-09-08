@@ -13,7 +13,7 @@ import EclipseFilledRight from '../../../assets/icons/eclipse-details-filled-rig
 import { Chip } from 'react-native-paper';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Personality = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Personality = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const animation = useRef();
   const [selectedChips, setSelectedChips] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,7 +69,6 @@ const Personality = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClic
     }
   };
   const handleNext = () => {
-    setClicked(false);
     if (selectedChips.length == 0) {
       Alert.alert('Please select the options');
       return;
@@ -84,11 +83,6 @@ const Personality = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClic
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Bio'); // adjust route as needed
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

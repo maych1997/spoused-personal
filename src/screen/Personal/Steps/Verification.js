@@ -9,13 +9,8 @@ import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import OtpInput from '../../../components/OtpInput';
 import Footer from '../../../components/Footer';
-const Verification = ({ navigation, clicked,setClicked,route }) => {
+const Verification = ({ navigation,route }) => {
   const [otp,setOtp]=useState(0);
-    useEffect(()=>{
-      if(clicked){
-        navigation.pop();
-      }
-    },[clicked])
   return (
     <View
       style={{
@@ -71,7 +66,6 @@ const Verification = ({ navigation, clicked,setClicked,route }) => {
             <TouchableOpacity
               onPress={() => {
                 if(otp==route?.params?.confirmation){
-                  setClicked(false);
                   navigation.push('Spouse');
                 }
               }}

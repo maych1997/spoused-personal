@@ -10,12 +10,95 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLOR } from '../utils/colors';
 import * as Animatable from 'react-native-animatable';
-const SpouseHeader = ({ spouseSteps, setSpouseSteps, navigateBack, title }) => {
+const SpouseHeader = ({ spouseSteps, setSpouseSteps, navigation, title }) => {
   const handleBack = () => {
-    setSpouseSteps(prev => (prev > 1 ? prev - 1 : prev));
-    if (spouseSteps!=1) {
-      navigateBack();
+    setSpouseSteps(prev => (prev > 0 ? prev - 1 : 0));
+
+    if (spouseSteps === 1) {
+      return navigation.navigate('Spouse', {
+        screen: 'Profession',
+      });
     }
+
+    if (spouseSteps === 2) {
+      return navigation.navigate('Spouse', {
+        screen: 'Describe',
+      });
+    }
+
+    if (spouseSteps === 3) {
+      return navigation.navigate('Spouse', {
+        screen: 'Degree',
+      });
+    }
+
+    if (spouseSteps === 4) {
+      return navigation.navigate('Spouse', {
+        screen: 'Country',
+      });
+    }
+
+    if (spouseSteps === 5) {
+      return navigation.navigate('Spouse', {
+        screen: 'Height',
+      });
+    }
+    if (spouseSteps === 6) {
+      return navigation.navigate('Spouse', {
+        screen: 'MaritalStatus',
+      });
+    }
+    if (spouseSteps === 7) {
+      return navigation.navigate('Spouse', {
+        screen: 'Gender',
+      });
+    }
+    if (spouseSteps === 8) {
+      return navigation.navigate('Spouse', {
+        screen: 'Smoke',
+      });
+    }
+    if (spouseSteps === 9) {
+      return navigation.navigate('Spouse', {
+        screen: 'Children',
+      });
+    }
+    if (spouseSteps === 10) {
+      return navigation.navigate('Spouse', {
+        screen: 'LookingFor',
+      });
+    }
+    if (spouseSteps === 11) {
+      return navigation.navigate('Spouse', {
+        screen: 'Religion',
+      });
+    }
+    if (spouseSteps === 12) {
+      return navigation.navigate('Spouse', {
+        screen: 'Drink',
+      });
+    }
+    if (spouseSteps === 13) {
+      return navigation.navigate('Spouse', {
+        screen: 'Zodiac',
+      });
+    }
+    if (spouseSteps === 14) {
+      return navigation.navigate('Spouse', {
+        screen: 'Details',
+      });
+    }
+    if (spouseSteps === 15) {
+      return navigation.navigate('Spouse', {
+        screen: 'Personality',
+      });
+    }
+    if (spouseSteps === 16) {
+      return navigation.navigate('Spouse', {
+        screen: 'Bio',
+      });
+    }
+    
   };
   return (
     <View

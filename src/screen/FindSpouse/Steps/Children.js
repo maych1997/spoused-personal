@@ -8,7 +8,7 @@ import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Children = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Children = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [selected, setSelected] = useState(0);
 
   // Updated options -> Yes / No / Maybe
@@ -18,7 +18,6 @@ const Children = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked
     { name: 'Maybe', id: 3 },
   ];
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select the suitable option');
       return;
@@ -30,12 +29,6 @@ const Children = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked
     setSpouseSteps(spouseSteps + 1);
     navigation.push('LookingFor'); // update next step screen
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
-
   return (
     <View
       style={{

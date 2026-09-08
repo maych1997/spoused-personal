@@ -21,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Profession = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Profession = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const professions = [
@@ -74,7 +74,6 @@ const Profession = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClick
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your profession');
       return;
@@ -86,11 +85,6 @@ const Profession = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClick
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Describe');
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

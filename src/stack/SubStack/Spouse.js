@@ -22,65 +22,65 @@ import DashboardStack from '../DashboardStack';
 
 const Stack = createNativeStackNavigator();
 
-const Spouse = ({ setSpouseSteps,clicked,setClicked, spouseSteps}) => {
+const Spouse = ({ setSpouseSteps, spouseSteps}) => {
   return (
     <Stack.Navigator
       initialRouteName="Profession"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Profession">
-        {props => <Profession {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked}/>}
+        {props => <Profession {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Describe">
-        {props => <Describe {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Describe {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Degree">
-        {props => <Degree {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Degree {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Country">
-        {props => <Country {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Country {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Height">
-        {props => <Height {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Height {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="MaritalStatus">
-        {props => <MaritalStatus {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <MaritalStatus {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Gender">
-        {props => <Gender {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Gender {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Smoke">
-        {props => <Smoke {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Smoke {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Children">
-        {props => <Children {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Children {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="LookingFor">
-        {props => <LookingFor {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <LookingFor {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Religion">
-        {props => <Religion {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Religion {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Drink">
-        {props => <Drink {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Drink {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Zodiac">
-        {props => <Zodiac {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Zodiac {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Details">
-        {props => <Details {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Details {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Personality">
-        {props => <Personality {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Personality {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="Bio">
-        {props => <Bio {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Bio {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
        <Stack.Screen name="Congrats">
-        {props => <Congrats {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <Congrats {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
       <Stack.Screen name="DashboardStack">
-        {props => <DashboardStack {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} clicked={clicked} setClicked={setClicked} />}
+        {props => <DashboardStack {...props} setSpouseSteps={setSpouseSteps} spouseSteps={spouseSteps} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

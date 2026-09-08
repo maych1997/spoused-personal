@@ -21,14 +21,13 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Bio = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Bio = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [focusedField, setFocusedField] = useState(null);
   const [bio, setBio] = useState(null);
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
-    setClicked(false);
     if (bio.length == 0) {
       Alert.alert('Please add your bio');
       return;
@@ -40,11 +39,6 @@ const Bio = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) =
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Congrats');
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

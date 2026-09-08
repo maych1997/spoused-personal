@@ -22,12 +22,11 @@ import Search from '../../../components/Search';
 import { RulerPicker } from 'react-native-ruler-picker';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Height = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const Height = ({ navigation, setSpouseSteps, spouseSteps }) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected,setSelected]=useState('cm');
   const [height,setHeight]=useState(0);
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your height');
       return;
@@ -39,11 +38,6 @@ const Height = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }
     setSpouseSteps(spouseSteps + 1);
     navigation.push('MaritalStatus');
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

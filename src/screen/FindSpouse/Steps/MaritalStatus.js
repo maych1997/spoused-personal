@@ -21,7 +21,7 @@ import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const MaritalStatus = ({ navigation, setSpouseSteps, spouseSteps, clicked, setClicked }) => {
+const MaritalStatus = ({ navigation, setSpouseSteps, spouseSteps}) => {
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
   const maritalStatus = [
@@ -35,7 +35,6 @@ const MaritalStatus = ({ navigation, setSpouseSteps, spouseSteps, clicked, setCl
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
   const handleNext = () => {
-    setClicked(false);
     if (!selected) {
       Alert.alert('Please select your marital status');
       return;
@@ -47,11 +46,6 @@ const MaritalStatus = ({ navigation, setSpouseSteps, spouseSteps, clicked, setCl
     setSpouseSteps(spouseSteps + 1);
     navigation.push('Gender');
   };
-  useEffect(() => {
-    if (clicked && navigation.isFocused()) {
-      navigation.pop();
-    }
-  }, [clicked]);
 
   return (
     <View

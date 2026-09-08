@@ -6,7 +6,7 @@ import DatePicker from 'react-native-date-picker';
 import { COLOR } from '../../../utils/colors';
 import { updateUserProfile } from '../../../services/saveUserService';
 
-const Birthday = ({ navigation, setSteps,steps, clicked,setClicked }) => {
+const Birthday = ({ navigation, setSteps,steps}) => {
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +27,6 @@ const Birthday = ({ navigation, setSteps,steps, clicked,setClicked }) => {
   };
 
   const handleNext = async () => {
-    setClicked(false);
     try {
       if (!date) return;
 
@@ -55,11 +54,6 @@ const Birthday = ({ navigation, setSteps,steps, clicked,setClicked }) => {
       setLoading(false);
     }
   };
-    useEffect(()=>{
-      if(clicked){
-        navigation.pop();
-      }
-    },[clicked])
   return (
     <View
       style={{
