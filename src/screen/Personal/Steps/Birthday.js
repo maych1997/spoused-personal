@@ -4,9 +4,12 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import * as Animatable from 'react-native-animatable';
 import DatePicker from 'react-native-date-picker';
 import { COLOR } from '../../../utils/colors';
-import { updateUserProfile } from '../../../services/saveUserService';
+import {
+  getUserProfile,
+  updateUserProfile,
+} from '../../../services/saveUserService';
 
-const Birthday = ({ navigation, setSteps,steps}) => {
+const Birthday = ({ navigation, setSteps, steps }) => {
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
 
@@ -46,7 +49,7 @@ const Birthday = ({ navigation, setSteps,steps}) => {
         age: age,
       });
 
-      setSteps(steps+1);
+      setSteps(steps + 1);
       navigation.push('Gender');
     } catch (error) {
       Alert.alert(error);
@@ -54,6 +57,20 @@ const Birthday = ({ navigation, setSteps,steps}) => {
       setLoading(false);
     }
   };
+  const loadUserDetails = async () => {
+    try {
+      const res = await getUserProfile();
+
+      if (res.success && res.data) {
+        setDate(new Date(res?.data?.dob));
+      }
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+  useEffect(() => {
+    loadUserDetails();
+  }, []);
   return (
     <View
       style={{

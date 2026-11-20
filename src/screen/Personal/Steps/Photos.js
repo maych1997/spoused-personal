@@ -21,7 +21,7 @@ import {
 } from '../../../services/saveUserService';
 import { getUid } from '../../../services/saveUserService';
 
-const Photos = ({ navigation, setSteps, steps}) => {
+const Photos = ({ navigation, setSteps, steps }) => {
   const [photos, setPhotos] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [blurPhotos, setBlurPhotos] = useState(false);
@@ -118,7 +118,7 @@ const Photos = ({ navigation, setSteps, steps}) => {
       Alert.alert(error);
     }
   };
-  const loadPhotos = async () => {
+  const loadUserDetails = async () => {
     try {
       const res = await getUserProfile();
 
@@ -131,7 +131,7 @@ const Photos = ({ navigation, setSteps, steps}) => {
     }
   };
   useEffect(() => {
-    loadPhotos();
+    loadUserDetails();
   }, []);
   const handleBlurToggle = async value => {
     setBlurPhotos(value);
@@ -144,7 +144,7 @@ const Photos = ({ navigation, setSteps, steps}) => {
       Alert.alert(error);
     }
   };
-  
+
   return (
     <View
       style={{

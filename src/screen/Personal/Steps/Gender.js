@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
-import { updateUserProfile } from '../../../services/saveUserService';
+import { getUserProfile, updateUserProfile } from '../../../services/saveUserService';
 
 const Gender = ({ navigation, setSteps,steps}) => {
   const [selected, setSelected] = useState(null);
@@ -38,6 +38,20 @@ const Gender = ({ navigation, setSteps,steps}) => {
       setLoading(false);
     }
   };
+    const loadUserDetails = async () => {
+      try {
+        const res = await getUserProfile();
+  
+        if (res.success && res.data) {
+          setSelected(res?.data?.gender);
+        }
+      } catch (error) {
+        Alert.alert(error);
+      }
+    };
+    useEffect(() => {
+      loadUserDetails();
+    }, []);
   return (
     <View
       style={{

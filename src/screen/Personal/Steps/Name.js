@@ -5,7 +5,7 @@ import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 
 // 🔥 IMPORT YOUR SERVICE
-import { updateUserProfile } from '../../../services/saveUserService';
+import { getUserProfile, updateUserProfile } from '../../../services/saveUserService';
 
 const Name = ({ navigation, setSteps,steps }) => {
   const [focusedField, setFocusedField] = useState(null);
@@ -38,6 +38,22 @@ const Name = ({ navigation, setSteps,steps }) => {
       setLoading(false);
     }
   };
+
+  const loadUserDetails = async () => {
+    try {
+      const res = await getUserProfile();
+
+      if (res.success && res.data) {
+        setName(res?.data?.name);
+      }
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+
+  useEffect(()=>{
+    loadUserDetails();
+  },[])
 
   return (
     <View

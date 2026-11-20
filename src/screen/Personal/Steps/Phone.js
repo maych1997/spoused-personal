@@ -46,20 +46,37 @@ const Phone = ({ navigation, setSteps }) => {
       });
 
       setSteps(5);
-
-      console.log(fullPhone);
+      console.log(value)
 
       // 🔥 Navigate to verification WITH confirmation object
-      navigation.push('Verification', {
-        confirmation: 123456,
-        phone: fullPhone,
-      });
+      // navigation.push('Verification', {
+      //   confirmation: 123456,
+      //   phone: fullPhone,
+      // });
     } catch (error) {
       Alert.alert('Error', error.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
   };
+    const loadUserDetails = async () => {
+      try {
+        const res = await getUserProfile();
+  
+        if (res?.success && res?.data) {
+          setValue(res?.data?.phone || '');
+
+          if (res?.data?.country) {
+            setCountry(res?.data?.country);
+          }
+        }
+      } catch (error) {
+        Alert.alert(error);
+      }
+    };
+    useEffect(() => {
+      loadUserDetails();
+    }, []);
   return (
     <View
       style={{
@@ -107,15 +124,8 @@ const Phone = ({ navigation, setSteps }) => {
                 }}
                 onChangeText={text => {
                   setValue(text);
-                  console.log(
-                    'Phone number:',
-                    text,
-                    'isValidNumber:',
-                    isValidNumber(text, country?.cca2 || 'US'),
-                  );
                 }}
                 onChangeCountry={country => {
-                  console.log('Country:', country);
                   setCountry(country);
                 }}
               />
