@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Alert } from 'react-native';
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { COLOR } from '../../../utils/colors';
 import * as Animatable from 'react-native-animatable';
 import { PhoneInput, isValidNumber } from 'react-native-phone-entry';
-import CountryFlag from 'react-native-country-flag';
-import { updateUserProfile } from '../../../services/saveUserService';
+import {
+  getUserProfile,
+  updateUserProfile,
+} from '../../../services/saveUserService';
 
 // 🔥 ADDED Firebase Auth
 import auth from '@react-native-firebase/auth';
@@ -46,37 +45,37 @@ const Phone = ({ navigation, setSteps }) => {
       });
 
       setSteps(5);
-      console.log(value)
+      console.log(value);
 
       // 🔥 Navigate to verification WITH confirmation object
-      // navigation.push('Verification', {
-      //   confirmation: 123456,
-      //   phone: fullPhone,
-      // });
+      navigation.push('Verification', {
+        confirmation: 123456,
+        phone: fullPhone,
+      });
     } catch (error) {
       Alert.alert('Error', error.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
   };
-    const loadUserDetails = async () => {
-      try {
-        const res = await getUserProfile();
-  
-        if (res?.success && res?.data) {
-          setValue(res?.data?.phone || '');
+  const loadUserDetails = async () => {
+    try {
+      const res = await getUserProfile();
 
-          if (res?.data?.country) {
-            setCountry(res?.data?.country);
-          }
+      if (res?.success && res?.data) {
+        setValue(res?.data?.phone || '');
+
+        if (res?.data?.country) {
+          setCountry(res?.data?.country);
         }
-      } catch (error) {
-        Alert.alert(error);
       }
-    };
-    useEffect(() => {
-      loadUserDetails();
-    }, []);
+    } catch (error) {
+      console.log('Hi I am error:::::', error);
+    }
+  };
+  useEffect(() => {
+    loadUserDetails();
+  }, []);
   return (
     <View
       style={{
@@ -128,20 +127,9 @@ const Phone = ({ navigation, setSteps }) => {
                 onChangeCountry={country => {
                   setCountry(country);
                 }}
+                flagProps={{ withEmoji: false, flagSize: 25 }}
+                countryPickerProps={{ withEmoji: false, withFlag: true }}
               />
-
-              {country && (
-                <View
-                  style={{
-                    position: 'absolute',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    left: wp('5%'),
-                  }}
-                >
-                  <CountryFlag isoCode={country.cca2} size={25} />
-                </View>
-              )}
             </Animatable.View>
           </View>
         </View>
