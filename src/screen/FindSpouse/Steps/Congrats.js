@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -20,10 +20,14 @@ import Unselect from '../../../assets/icons/eclipse-empty-icon.svg';
 import Select from '../../../assets/icons/selected-tick-eclipse.svg';
 import Tick from '../../../assets/icons/tick.svg';
 import Search from '../../../components/Search';
+import { AuthContext } from '../../../provider/AuthContext';
+import { updateUserProfile } from '../../../services/saveUserService';
 
-const Congrats = ({ navigation}) => {
+const Congrats = () => {
+  const { markProfileCompleted } = useContext(AuthContext);
   const [focusedField, setFocusedField] = useState(null);
   const [selected, setSelected] = useState(0);
+  const [isCompleting, setIsCompleting] = useState(false);
   const genders = [
     { name: 'Male', id: 1 },
     { name: 'Female', id: 2 },
@@ -32,6 +36,31 @@ const Congrats = ({ navigation}) => {
 
   const getBorderColor = fieldName =>
     focusedField === fieldName ? COLOR.primary : '#0000000D';
+
+  const handleCompleteProfile = async () => {
+    setIsCompleting(true);
+
+    try {
+      const result = await updateUserProfile({ profileCompleted: true });
+
+      if (!result.success) {
+        Alert.alert(
+          'Unable to complete profile',
+          result.error || 'Please try again.',
+        );
+        return;
+      }
+
+      markProfileCompleted(true);
+    } catch (error) {
+      Alert.alert(
+        'Unable to complete profile',
+        error.message || 'Please try again.',
+      );
+    } finally {
+      setIsCompleting(false);
+    }
+  };
 
   return (
     <View
@@ -103,12 +132,11 @@ const Congrats = ({ navigation}) => {
         delay={800}
       >
         <TouchableOpacity
-          onPress={() => {
-            navigation.push('DashboardStack');
-          }}
+          onPress={handleCompleteProfile}
+          disabled={isCompleting}
           style={{
             width: '100%',
-            backgroundColor: COLOR.primary,
+            backgroundColor: isCompleting ? COLOR.grey : COLOR.primary,
             height: hp('5.2%'),
             borderRadius: hp('10%'),
             justifyContent: 'center',
@@ -122,7 +150,7 @@ const Congrats = ({ navigation}) => {
               color: COLOR.secondary,
             }}
           >
-            Find a Match
+            {isCompleting ? 'Saving...' : 'Find a Match'}
           </Text>
         </TouchableOpacity>
       </Animatable.View>

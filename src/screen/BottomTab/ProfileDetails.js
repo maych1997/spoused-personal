@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ScrollView,
@@ -7,344 +8,441 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Message from '../../assets/icons/message.svg';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { useIsFocused } from '@react-navigation/native';
+import * as Animatable from 'react-native-animatable';
 import Flag from '../../assets/icons/flag.svg';
-import { COLOR } from '../../utils/colors';
 import Hide from '../../assets/icons/hide.svg';
 import Heart from '../../assets/icons/heart-black.svg';
+import Message from '../../assets/icons/message.svg';
 import MessagBlack from '../../assets/icons/message-black.svg';
-import * as Animatable from 'react-native-animatable';
-import { useIsFocused } from '@react-navigation/native';
-import Navigation from '../../assets/icons/navigation.svg';
+import { COLOR } from '../../utils/colors';
 
-const ProfileDetails = () => {
-  const details = [
-    { heading: 'About Me', details: ['Secondary School', 'Aries', 'Single'] },
-    {
-      heading: 'Biography',
-      details:
-        'Qui id non deleniti ipsa rem praesentium quaerat. Minus sit id vitae in et maiores quisquam consectetur. Quia aliquid quibusdam impedit laudantium. Sint porro dolorum ea qui enim id quia praesentium dolor. Quo voluptatibus corrupti voluptatem aut at molestiae facilis temporibus dignissimos. Dolores ad libero fugit voluptates.',
-    },
-    {
-      heading: 'Interests',
-      details: ['Basket Ball', 'Surfing', 'Baking', 'Junk Food', 'Meat Lover'],
-    },
-    {
-      heading: '',
-      details: [
-        require('../../assets/placeHolder/placeholder.jpg'),
-        require('../../assets/placeHolder/placeholder.jpg'),
-        require('../../assets/placeHolder/placeholder.jpg'),
-        require('../../assets/placeHolder/placeholder.jpg'),
-      ],
-    },
-    {
-      heading: 'Location',
-      details: ['23854 Schiller Lakes', '3.2 km away', 'Pakistan'],
-    },
-    { heading: 'Height & Age', details: ['5.6`', '22 years old'] },
-    {
-      heading: 'Profession & Education',
-      details: ['UI / UX Designer`', 'Secondary School'],
-    },
-  ];
+const PRIVATE_FIELDS = new Set([
+  'blurPhotos',
+  'dob',
+  'email',
+  'phone',
+  'profileCompleted',
+  'uid',
+  'updatedAt',
+]);
 
+const FIELD_LABELS = {
+  genderPreference: 'Gender preference',
+  maitalStatus: 'Marital status',
+  purpose: 'Relationship goals',
+};
+
+const formatLabel = key =>
+  FIELD_LABELS[key] ||
+  key
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[_-]/g, ' ')
+    .replace(/^./, character => character.toUpperCase());
+
+const hasDisplayableValue = value => {
+  if (value === null || value === undefined) {
+    return false;
+  }
+
+  if (typeof value === 'string') {
+    return value.trim().length > 0;
+  }
+
+  if (Array.isArray(value)) {
+    return value.length > 0;
+  }
+
+  if (typeof value === 'object') {
+    return Object.keys(value).length > 0;
+  }
+
+  return true;
+};
+
+const formatPrimitive = value => {
+  if (typeof value === 'boolean') {
+    return value ? 'Yes' : 'No';
+  }
+
+  return String(value);
+};
+
+const ProfileValue = ({ value }) => {
+  if (Array.isArray(value)) {
+    return (
+      <View style={styles.valueList}>
+        {value.map((item, index) =>
+          item !== null && typeof item === 'object' ? (
+            <ProfileValue key={index} value={item} />
+          ) : (
+            <Text key={index} style={styles.valueChip}>
+              {formatPrimitive(item)}
+            </Text>
+          ),
+        )}
+      </View>
+    );
+  }
+
+  if (value !== null && typeof value === 'object') {
+    return (
+      <View style={styles.nestedValues}>
+        {Object.entries(value)
+          .filter(([, nestedValue]) => hasDisplayableValue(nestedValue))
+          .map(([key, nestedValue]) => (
+            <View key={key} style={styles.nestedField}>
+              <Text style={styles.nestedLabel}>{formatLabel(key)}</Text>
+              <ProfileValue value={nestedValue} />
+            </View>
+          ))}
+      </View>
+    );
+  }
+
+  return <Text style={styles.valueText}>{formatPrimitive(value)}</Text>;
+};
+
+const ProfilePhoto = ({ uri, style }) => {
+  const [isLoading, setIsLoading] = useState(Boolean(uri));
+  const [hasError, setHasError] = useState(!uri);
+
+  return (
+    <View style={[styles.photoFrame, style]}>
+      {uri && !hasError && (
+        <Image
+          source={{ uri }}
+          style={styles.photoImage}
+          resizeMode="cover"
+          onLoadStart={() => setIsLoading(true)}
+          onLoadEnd={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false);
+            setHasError(true);
+          }}
+        />
+      )}
+      {hasError && (
+        <Text style={styles.photoFallback}>Photo unavailable</Text>
+      )}
+      {isLoading && (
+        <View pointerEvents="none" style={styles.photoLoader}>
+          <ActivityIndicator color={COLOR.primary} size="large" />
+          <Text style={styles.photoLoaderText}>Loading photo</Text>
+        </View>
+      )}
+    </View>
+  );
+};
+
+const ProfileDetails = ({ route }) => {
+  const profile = route?.params?.profile;
+  const photos = Array.isArray(profile?.photos) ? profile.photos : [];
+  const fields = Object.entries(profile || {}).filter(
+    ([key, value]) =>
+      !PRIVATE_FIELDS.has(key) &&
+      !['age', 'name', 'photos'].includes(key) &&
+      hasDisplayableValue(value),
+  );
   const isFocused = useIsFocused();
   const [key, setKey] = useState(0);
 
-  // 🔄 Restart animations on focus
   useEffect(() => {
     if (isFocused) {
-      setKey(prev => prev + 1);
+      setKey(previousKey => previousKey + 1);
     }
   }, [isFocused]);
+
+  if (!profile) {
+    return (
+      <View style={styles.emptyState}>
+        <Text style={styles.emptyStateText}>
+          Profile details are unavailable.
+        </Text>
+      </View>
+    );
+  }
+
+  const profileSubtitle = [profile.profession, profile.country]
+    .filter(value => typeof value === 'string' && value.trim())
+    .join(' · ');
 
   return (
     <FlatList
       key={key}
-      data={details}
-      keyExtractor={(_, index) => index.toString()}
-      contentContainerStyle={{
-        paddingBottom: hp('10%'),
-        backgroundColor: '#fff',
-      }}
-      // 🔹 HEADER
+      data={fields}
+      keyExtractor={([field]) => field}
+      contentContainerStyle={styles.listContent}
       ListHeaderComponent={
-        <View style={{ position: 'relative' }}>
-          {/* Profile Image with fadeIn */}
-          <Animatable.Image
-            animation="fadeIn"
-            duration={800}
-            style={{ width: '100%', height: hp('70%') }}
-            source={require('../../assets/placeHolder/placeholder.jpg')}
-          />
-
-          {/* Name + Info */}
-          <Animatable.View
-            animation="fadeInUp"
-            duration={600}
-            delay={300}
-            style={{
-              position: 'absolute',
-              zIndex: 1000,
-              top: hp('57%'),
-              left: 20,
-            }}
-          >
-            <Text style={{ fontSize: 22, color: '#fff', fontWeight: '600' }}>
-              John, 23
-            </Text>
-            <Text style={{ color: '#fff', fontSize: 14 }}>
-              Designer | Indian
-            </Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: wp('2%'),
-                marginTop: hp('2%'),
-              }}
+        <View>
+          <View style={styles.hero}>
+            <ProfilePhoto uri={photos[0]} style={styles.heroPhoto} />
+            <Animatable.View
+              animation="fadeInUp"
+              duration={600}
+              style={styles.heroDetails}
             >
-              <Flag />
-              <Text style={{ color: '#fff', fontSize: 14 }}>
-                600 miles away,
+              <Text style={styles.heroName}>
+                {profile.name || 'Profile'}
+                {profile.age ? `, ${profile.age}` : ''}
               </Text>
-              <Text style={{ color: '#fff', fontWeight: '600' }}>USA</Text>
-            </View>
-          </Animatable.View>
-
-          {/* Message Icon */}
-          <Animatable.View
-            animation="bounceIn"
-            duration={800}
-            delay={500}
-            style={{ position: 'absolute', top: hp('61%'), right: 20 }}
-          >
-            <TouchableOpacity>
+              {profileSubtitle ? (
+                <Text style={styles.heroSubtitle}>{profileSubtitle}</Text>
+              ) : null}
+              {profile.country ? (
+                <View style={styles.heroLocation}>
+                  <Flag />
+                  <Text style={styles.heroSubtitle}>
+                    {typeof profile.country === 'string'
+                      ? profile.country
+                      : 'Location available'}
+                  </Text>
+                </View>
+              ) : null}
+            </Animatable.View>
+            <TouchableOpacity style={styles.heroMessageButton}>
               <Message />
             </TouchableOpacity>
-          </Animatable.View>
+          </View>
+
+          {photos.length > 1 ? (
+            <View style={styles.gallery}>
+              <Text style={styles.sectionHeading}>Photos</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {photos.slice(1).map((photo, index) => (
+                  <ProfilePhoto
+                    key={`${photo}-${index}`}
+                    uri={photo}
+                    style={styles.galleryPhoto}
+                  />
+                ))}
+              </ScrollView>
+            </View>
+          ) : null}
         </View>
       }
-      // 🔹 EACH DETAIL ITEM
-      renderItem={({ item, index }) => (
+      renderItem={({ item: [field, value], index }) => (
         <Animatable.View
           animation="fadeInUp"
-          duration={600}
-          delay={index * 150}
-          style={{
-            marginTop: hp('3%'),
-            paddingLeft: wp('2%'),
-            paddingRight: wp('2%'),
-          }}
+          duration={500}
+          delay={Math.min(index * 80, 400)}
+          style={styles.profileField}
         >
-          {item?.heading ? (
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                marginBottom: hp('1%'),
-              }}
-            >
-              {item.heading}
-            </Text>
-          ) : null}
-
-          {Array.isArray(item.details) ? (
-            <>
-              {/* Horizontal Image Scroll */}
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {item.details.map((detail, idx) =>
-                  typeof detail !== 'string' ? (
-                    <Image
-                      key={idx}
-                      source={detail}
-                      style={{
-                        width: wp('70%'),
-                        height: hp('35%'),
-                        borderRadius: 10,
-                        margin: wp('1%'),
-                      }}
-                    />
-                  ) : null,
-                )}
-              </ScrollView>
-
-              {/* Tags / Info */}
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                {item.details.map((detail, idx) =>
-                  typeof detail === 'string' ? (
-                    item.heading != 'Location' ? (
-                      <Text
-                        key={idx}
-                        style={{
-                          fontSize: 14,
-                          padding: hp('1%'),
-                          borderRadius: 20,
-                          marginRight: wp('2%'),
-                          marginTop: hp('1%'),
-                          backgroundColor: COLOR.stepUnfinished,
-                          textAlign: 'center',
-                        }}
-                      >
-                        {detail}
-                      </Text>
-                    ) : (
-                      <></>
-                    )
-                  ) : null,
-                )}
-              </View>
-              <View style={{ flexDirection: 'column', flexWrap: 'wrap' }}>
-                {item.details.map((detail, idx) =>
-                  typeof detail === 'string' ? (
-                    item.heading == 'Location' && idx == 0 ? (
-                      <Text
-                        key={idx}
-                        style={{
-                          fontSize: 14,
-                          marginRight: wp('2%'),
-                          marginTop: hp('1%'),
-                          textAlign: 'center',
-                          color: '#000',
-                          opacity: 0.5,
-                        }}
-                      >
-                        {detail}
-                      </Text>
-                    ) : (
-                      <></>
-                    )
-                  ) : null,
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  marginTop: hp('0.5%'),
-                }}
-              >
-                {item.details.map((detail, idx) =>
-                  typeof detail === 'string' ? (
-                    item.heading == 'Location' && idx != 0 ? (
-                      <View
-                        style={{
-                          backgroundColor: COLOR.stepUnfinished,
-                          padding: hp('1%'),
-                          borderRadius: 20,
-                          marginRight: wp('2%'),
-                          marginTop: hp('1%'),
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: wp('2%'),
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}
-                      >
-                        {idx == 1 ? <Navigation></Navigation> : <></>}
-                        <Text
-                          key={idx}
-                          style={{
-                            fontSize: 14,
-                            textAlign: 'center',
-                          }}
-                        >
-                          {detail}
-                        </Text>
-                      </View>
-                    ) : (
-                      <></>
-                    )
-                  ) : null,
-                )}
-              </View>
-            </>
-          ) : (
-            <Text
-              style={{
-                fontSize: 16,
-                marginTop: hp('0.5%'),
-                textAlign: 'justify',
-              }}
-            >
-              {item.details}
-            </Text>
-          )}
+          <Text style={styles.sectionHeading}>{formatLabel(field)}</Text>
+          <ProfileValue value={value} />
         </Animatable.View>
       )}
-      // 🔹 FOOTER
+      ListEmptyComponent={
+        <Text style={styles.emptyStateText}>
+          No additional profile details have been added.
+        </Text>
+      }
       ListFooterComponent={
-        <>
-          {/* Action Buttons */}
+        <View>
           <Animatable.View
             animation="fadeInUp"
             duration={600}
-            delay={details.length * 150}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              padding: hp('2%'),
-              marginTop: hp('2%'),
-              alignItems: 'center',
-            }}
+            style={styles.actionButtons}
           >
             <TouchableOpacity>
               <Hide />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: COLOR.primary,
-                padding: hp('1.5%'),
-                flexDirection: 'row',
-                borderRadius: 50,
-                alignItems: 'center',
-                gap: wp('2%'),
-              }}
-            >
+            <TouchableOpacity style={styles.matchButton}>
               <Heart />
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-                Send Match
-              </Text>
+              <Text style={styles.matchButtonText}>Send Match</Text>
             </TouchableOpacity>
             <TouchableOpacity>
               <MessagBlack />
             </TouchableOpacity>
           </Animatable.View>
 
-          {/* Footer Actions */}
-          <Animatable.View
-            animation="fadeInUp"
-            duration={600}
-            delay={details.length * 200}
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              padding: hp('2%'),
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.footerActions}>
             <TouchableOpacity>
               <Text>Report</Text>
             </TouchableOpacity>
-            <Text style={{ fontWeight: 'bold' }}>-</Text>
+            <Text style={styles.footerSeparator}>-</Text>
             <TouchableOpacity>
               <Text>Recommend</Text>
             </TouchableOpacity>
-            <Text style={{ fontWeight: 'bold' }}>-</Text>
+            <Text style={styles.footerSeparator}>-</Text>
             <TouchableOpacity>
               <Text>Block</Text>
             </TouchableOpacity>
-          </Animatable.View>
-        </>
+          </View>
+        </View>
       }
     />
   );
+};
+
+const styles = {
+  listContent: {
+    paddingBottom: hp('10%'),
+    backgroundColor: '#fff',
+  },
+  hero: {
+    position: 'relative',
+  },
+  heroPhoto: {
+    width: '100%',
+    height: hp('70%'),
+    borderRadius: 0,
+  },
+  heroDetails: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: hp('5%'),
+    left: 20,
+    right: 70,
+  },
+  heroName: {
+    color: '#fff',
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  heroSubtitle: {
+    color: '#fff',
+    fontSize: 14,
+    marginTop: hp('0.5%'),
+  },
+  heroLocation: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: wp('2%'),
+    marginTop: hp('1%'),
+  },
+  heroMessageButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: hp('5%'),
+    zIndex: 2,
+  },
+  gallery: {
+    marginTop: hp('3%'),
+    paddingLeft: wp('3%'),
+  },
+  galleryPhoto: {
+    width: wp('65%'),
+    height: hp('30%'),
+    marginRight: wp('2%'),
+  },
+  profileField: {
+    marginTop: hp('3%'),
+    paddingHorizontal: wp('3%'),
+  },
+  sectionHeading: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: hp('1%'),
+  },
+  valueText: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: COLOR.secondary,
+  },
+  valueList: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: wp('2%'),
+  },
+  valueChip: {
+    fontSize: 14,
+    paddingHorizontal: hp('1.2%'),
+    paddingVertical: hp('0.8%'),
+    borderRadius: 20,
+    backgroundColor: COLOR.stepUnfinished,
+    color: COLOR.secondary,
+  },
+  nestedValues: {
+    gap: hp('1.5%'),
+  },
+  nestedField: {
+    gap: hp('0.5%'),
+  },
+  nestedLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: COLOR.secondary,
+  },
+  photoFrame: {
+    position: 'relative',
+    overflow: 'hidden',
+    backgroundColor: '#F1F2F4',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photoImage: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
+  photoLoader: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    backgroundColor: 'rgba(255,255,255,0.88)',
+  },
+  photoLoaderText: {
+    color: COLOR.grey,
+    fontSize: 14,
+  },
+  photoFallback: {
+    color: COLOR.grey,
+    fontSize: 14,
+  },
+  emptyState: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    padding: hp('3%'),
+  },
+  emptyStateText: {
+    color: COLOR.grey,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: hp('2%'),
+    marginTop: hp('2%'),
+    alignItems: 'center',
+  },
+  matchButton: {
+    backgroundColor: COLOR.primary,
+    padding: hp('1.5%'),
+    flexDirection: 'row',
+    borderRadius: 50,
+    alignItems: 'center',
+    gap: wp('2%'),
+  },
+  matchButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  footerActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: hp('2%'),
+    alignItems: 'center',
+  },
+  footerSeparator: {
+    fontWeight: 'bold',
+  },
 };
 
 export default ProfileDetails;
